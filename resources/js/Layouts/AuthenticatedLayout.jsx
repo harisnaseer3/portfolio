@@ -12,14 +12,15 @@ export default function AuthenticatedLayout({ header, children }) {
         useState(false);
 
     return (
-        <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
-            <nav className="border-b border-gray-100 bg-white dark:border-gray-700 dark:bg-gray-800">
+        <div className="min-h-screen bg-[#F8FAFF]">
+            <nav className="glass border-b border-gray-100 dark:border-gray-700 fixed top-0 w-full z-50">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex h-16 justify-between">
                         <div className="flex">
                             <div className="flex shrink-0 items-center">
-                                <Link href="/">
-                                    <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
+                                <Link href="/" className="flex items-center gap-2 font-black text-primary text-xl tracking-tighter uppercase">
+                                    <span className="w-8 h-8 bg-primary text-white rounded-lg flex items-center justify-center text-sm shadow-lg shadow-primary/20">M</span>
+                                    ADMIN
                                 </Link>
                             </div>
 
@@ -29,6 +30,30 @@ export default function AuthenticatedLayout({ header, children }) {
                                     active={route().current('dashboard')}
                                 >
                                     Dashboard
+                                </NavLink>
+                                <NavLink
+                                    href={route('admin.projects.index')}
+                                    active={route().current('admin.projects.*')}
+                                >
+                                    Projects
+                                </NavLink>
+                                <NavLink
+                                    href={route('admin.skills.index')}
+                                    active={route().current('admin.skills.*')}
+                                >
+                                    Skills
+                                </NavLink>
+                                <NavLink
+                                    href={route('admin.services.index')}
+                                    active={route().current('admin.services.*')}
+                                >
+                                    Services
+                                </NavLink>
+                                <NavLink
+                                    href={route('admin.experiences.index')}
+                                    active={route().current('admin.experiences.*')}
+                                >
+                                    Experiences
                                 </NavLink>
                             </div>
                         </div>
@@ -134,6 +159,30 @@ export default function AuthenticatedLayout({ header, children }) {
                         >
                             Dashboard
                         </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('admin.projects.index')}
+                            active={route().current('admin.projects.*')}
+                        >
+                            Projects
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('admin.skills.index')}
+                            active={route().current('admin.skills.*')}
+                        >
+                            Skills
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('admin.services.index')}
+                            active={route().current('admin.services.*')}
+                        >
+                            Services
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('admin.experiences.index')}
+                            active={route().current('admin.experiences.*')}
+                        >
+                            Experiences
+                        </ResponsiveNavLink>
                     </div>
 
                     <div className="border-t border-gray-200 pb-1 pt-4 dark:border-gray-600">
@@ -163,14 +212,14 @@ export default function AuthenticatedLayout({ header, children }) {
             </nav>
 
             {header && (
-                <header className="bg-white shadow dark:bg-gray-800">
-                    <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+                <header className="bg-white/50 backdrop-blur-md border-b border-gray-100">
+                    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
                         {header}
                     </div>
                 </header>
             )}
 
-            <main>{children}</main>
+            <main className="pt-16">{children}</main>
         </div>
     );
 }
