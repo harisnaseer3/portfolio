@@ -155,6 +155,7 @@ const ProjectCard = forwardRef(({ project, index }, ref) => (
 ));
 
 export default function Welcome({ canLogin, canRegister, skills, services, experiences, projects }) {
+    const { settings } = usePage().props;
     const [activeTab, setActiveTab] = useState('ALL');
     const categories = ['ALL', 'MOBILE APP', 'WEB APP', 'UI/UX'];
     
@@ -222,11 +223,21 @@ export default function Welcome({ canLogin, canRegister, skills, services, exper
                                 Hire Me <ArrowRight className="group-hover:translate-x-2 transition-transform" />
                             </button>
                             <div className="flex gap-4">
-                                {[Github, Twitter, Linkedin].map((Icon, i) => (
-                                    <a key={i} href="#" className="w-12 h-12 rounded-full border border-border-main flex items-center justify-center text-text-main hover:bg-primary hover:text-white transition-all hover:border-primary">
-                                        <Icon size={20} />
+                                {settings?.social_github && (
+                                    <a href={settings.social_github} target="_blank" className="w-12 h-12 rounded-full border border-border-main flex items-center justify-center text-text-main hover:bg-primary hover:text-white transition-all hover:border-primary">
+                                        <Github size={20} />
                                     </a>
-                                ))}
+                                )}
+                                {settings?.social_twitter && (
+                                    <a href={settings.social_twitter} target="_blank" className="w-12 h-12 rounded-full border border-border-main flex items-center justify-center text-text-main hover:bg-primary hover:text-white transition-all hover:border-primary">
+                                        <Twitter size={20} />
+                                    </a>
+                                )}
+                                {settings?.social_linkedin && (
+                                    <a href={settings.social_linkedin} target="_blank" className="w-12 h-12 rounded-full border border-border-main flex items-center justify-center text-text-main hover:bg-primary hover:text-white transition-all hover:border-primary">
+                                        <Linkedin size={20} />
+                                    </a>
+                                )}
                             </div>
                         </motion.div>
                     </div>
@@ -383,15 +394,28 @@ export default function Welcome({ canLogin, canRegister, skills, services, exper
                             <div className="space-y-10">
                                 <div className="flex gap-6 items-center">
                                     <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center"><Phone size={28} /></div>
-                                    <div><p className="text-white/60 text-sm font-bold uppercase tracking-widest">Call Me</p><p className="text-xl font-bold">+1 (234) 567-890</p></div>
+                                    <div>
+                                        <p className="text-white/60 text-sm font-bold uppercase tracking-widest">Call Me</p>
+                                        <a href={`tel:${settings?.contact_phone}`} className="text-xl font-bold hover:underline">
+                                            {settings?.contact_phone || '+1 (234) 567-890'}
+                                        </a>
+                                    </div>
                                 </div>
                                 <div className="flex gap-6 items-center">
                                     <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center"><Mail size={28} /></div>
-                                    <div><p className="text-white/60 text-sm font-bold uppercase tracking-widest">Email Me</p><p className="text-xl font-bold">hello@marshall.com</p></div>
+                                    <div>
+                                        <p className="text-white/60 text-sm font-bold uppercase tracking-widest">Email Me</p>
+                                        <a href={`mailto:${settings?.contact_email}`} className="text-xl font-bold hover:underline">
+                                            {settings?.contact_email || 'hello@marshall.com'}
+                                        </a>
+                                    </div>
                                 </div>
                                 <div className="flex gap-6 items-center">
                                     <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center"><MapPin size={28} /></div>
-                                    <div><p className="text-white/60 text-sm font-bold uppercase tracking-widest">Visit Me</p><p className="text-xl font-bold">New York, NY</p></div>
+                                    <div>
+                                        <p className="text-white/60 text-sm font-bold uppercase tracking-widest">Visit Me</p>
+                                        <p className="text-xl font-bold">{settings?.contact_location || 'New York, NY'}</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -457,11 +481,21 @@ export default function Welcome({ canLogin, canRegister, skills, services, exper
                                 {usePage().props.settings?.footer_description || 'Specializing in crafting high-end digital products with a focus on user-centric design and modern development.'}
                             </p>
                             <div className="flex gap-4">
-                                {[Github, Twitter, Linkedin].map((Icon, i) => (
-                                    <a key={i} href="#" className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-primary transition-all">
-                                        <Icon size={20} />
+                                {settings?.social_github && (
+                                    <a href={settings.social_github} target="_blank" className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-primary transition-all">
+                                        <Github size={20} />
                                     </a>
-                                ))}
+                                )}
+                                {settings?.social_twitter && (
+                                    <a href={settings.social_twitter} target="_blank" className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-primary transition-all">
+                                        <Twitter size={20} />
+                                    </a>
+                                )}
+                                {settings?.social_linkedin && (
+                                    <a href={settings.social_linkedin} target="_blank" className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-primary transition-all">
+                                        <Linkedin size={20} />
+                                    </a>
+                                )}
                             </div>
                         </div>
 

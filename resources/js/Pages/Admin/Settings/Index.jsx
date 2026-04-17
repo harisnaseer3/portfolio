@@ -5,13 +5,19 @@ import SecondaryButton from '@/Components/SecondaryButton';
 import TextInput from '@/Components/TextInput';
 import InputLabel from '@/Components/InputLabel';
 import InputError from '@/Components/InputError';
-import { Settings, Image as ImageIcon, Save, CheckCircle } from 'lucide-react';
+import { Settings, Image as ImageIcon, Save, CheckCircle, Mail } from 'lucide-react';
 
 export default function Index({ auth, settings }) {
     const { data, setData, post, processing, errors, recentlySuccessful } = useForm({
         site_name: settings.site_name || '',
         footer_copyright: settings.footer_copyright || '',
         footer_description: settings.footer_description || '',
+        contact_phone: settings.contact_phone || '',
+        contact_email: settings.contact_email || '',
+        contact_location: settings.contact_location || '',
+        social_github: settings.social_github || '',
+        social_twitter: settings.social_twitter || '',
+        social_linkedin: settings.social_linkedin || '',
         logo: null,
         hero_image: null,
         _method: 'post', // For file upload with post
@@ -172,6 +178,95 @@ export default function Index({ auth, settings }) {
                                             <CheckCircle size={18} /> Saved successfully!
                                         </div>
                                     )}
+                                </div>
+
+                                <hr className="border-gray-50" />
+
+                                {/* Contact Details */}
+                                <div>
+                                    <h4 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
+                                        <Mail className="text-primary" size={20} /> Contact Information
+                                    </h4>
+                                    <div className="grid md:grid-cols-3 gap-6">
+                                        <div>
+                                            <InputLabel htmlFor="contact_phone" value="Phone Number" />
+                                            <TextInput
+                                                id="contact_phone"
+                                                className="mt-1 block w-full !rounded-xl"
+                                                value={data.contact_phone}
+                                                onChange={(e) => setData('contact_phone', e.target.value)}
+                                                required
+                                            />
+                                            <InputError message={errors.contact_phone} className="mt-2" />
+                                        </div>
+                                        <div>
+                                            <InputLabel htmlFor="contact_email" value="Email Address" />
+                                            <TextInput
+                                                id="contact_email"
+                                                type="email"
+                                                className="mt-1 block w-full !rounded-xl"
+                                                value={data.contact_email}
+                                                onChange={(e) => setData('contact_email', e.target.value)}
+                                                required
+                                            />
+                                            <InputError message={errors.contact_email} className="mt-2" />
+                                        </div>
+                                        <div>
+                                            <InputLabel htmlFor="contact_location" value="Physical Location" />
+                                            <TextInput
+                                                id="contact_location"
+                                                className="mt-1 block w-full !rounded-xl"
+                                                value={data.contact_location}
+                                                onChange={(e) => setData('contact_location', e.target.value)}
+                                                required
+                                            />
+                                            <InputError message={errors.contact_location} className="mt-2" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr className="border-gray-50" />
+
+                                {/* Social Links */}
+                                <div>
+                                    <h4 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
+                                        <Settings className="text-primary" size={20} /> Social Media Profiles
+                                    </h4>
+                                    <div className="grid md:grid-cols-3 gap-6">
+                                        <div>
+                                            <InputLabel htmlFor="social_github" value="GitHub URL" />
+                                            <TextInput
+                                                id="social_github"
+                                                className="mt-1 block w-full !rounded-xl"
+                                                value={data.social_github}
+                                                onChange={(e) => setData('social_github', e.target.value)}
+                                                placeholder="https://github.com/your-username"
+                                            />
+                                            <InputError message={errors.social_github} className="mt-2" />
+                                        </div>
+                                        <div>
+                                            <InputLabel htmlFor="social_twitter" value="Twitter URL" />
+                                            <TextInput
+                                                id="social_twitter"
+                                                className="mt-1 block w-full !rounded-xl"
+                                                value={data.social_twitter}
+                                                onChange={(e) => setData('social_twitter', e.target.value)}
+                                                placeholder="https://twitter.com/your-handle"
+                                            />
+                                            <InputError message={errors.social_twitter} className="mt-2" />
+                                        </div>
+                                        <div>
+                                            <InputLabel htmlFor="social_linkedin" value="LinkedIn URL" />
+                                            <TextInput
+                                                id="social_linkedin"
+                                                className="mt-1 block w-full !rounded-xl"
+                                                value={data.social_linkedin}
+                                                onChange={(e) => setData('social_linkedin', e.target.value)}
+                                                placeholder="https://linkedin.com/in/your-profile"
+                                            />
+                                            <InputError message={errors.social_linkedin} className="mt-2" />
+                                        </div>
+                                    </div>
                                 </div>
                             </form>
                         </div>

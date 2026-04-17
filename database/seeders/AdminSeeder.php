@@ -18,7 +18,7 @@ class AdminSeeder extends Seeder
             User::create([
                 'name' => 'Portfolio Admin',
                 'email' => 'harisnaseer3@gmail.com',
-                'password' => Hash::make('Hsnsatti@23'),
+                'password' => Hash::make('Hnssatti@23'),
                 'email_verified_at' => now(),
             ]);
         }

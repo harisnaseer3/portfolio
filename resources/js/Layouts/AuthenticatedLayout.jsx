@@ -19,7 +19,7 @@ export default function AuthenticatedLayout({ header, children }) {
                     <div className="flex h-16 justify-between">
                         <div className="flex">
                             <div className="flex shrink-0 items-center">
-                                <Link href="/" className="flex items-center gap-2 font-black text-primary text-xl tracking-tighter uppercase">
+                                <Link href={route('dashboard')} className="flex items-center gap-2 font-black text-primary text-xl tracking-tighter uppercase">
                                     <BrandLogo className="h-8" />
                                     ADMIN
                                 </Link>

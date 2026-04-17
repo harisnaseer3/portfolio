@@ -23,6 +23,12 @@ class SettingController extends Controller
             'site_name' => 'required|string|max:255',
             'footer_copyright' => 'required|string|max:255',
             'footer_description' => 'required|string',
+            'contact_phone' => 'required|string|max:50',
+            'contact_email' => 'required|email|max:255',
+            'contact_location' => 'required|string|max:255',
+            'social_github' => 'nullable|url|max:255',
+            'social_twitter' => 'nullable|url|max:255',
+            'social_linkedin' => 'nullable|url|max:255',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'hero_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:4096',
         ]);
