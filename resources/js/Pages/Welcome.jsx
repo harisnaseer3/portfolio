@@ -180,7 +180,7 @@ export default function Welcome({ canLogin, canRegister, skills, services, exper
 
     return (
         <div className="min-h-screen bg-[#F8FAFF]">
-            <Head title="Marshall | UI Specialist Portfolio" />
+            <Head title="Haris | Developer Portfolio" />
             <Nav />
 
             {/* Hero Section */}
@@ -210,7 +210,9 @@ export default function Welcome({ canLogin, canRegister, skills, services, exper
                             transition={{ delay: 0.2 }}
                             className="text-xl text-text-muted max-w-lg mb-12 leading-relaxed"
                         >
-                            I'm a passionate UI/UX Designer and Web Developer focused on crafting premium digital experiences.
+                            Turning ideas into powerful web solutions
+                            Creating fast, secure, and reliable applications that drive real results.
+                            Focused on clean design, efficient architecture, and performance to ensure long-term scalability and stability.
                         </motion.p>
                         
                         <motion.div 
