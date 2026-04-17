@@ -23,7 +23,7 @@ class SettingSeeder extends Seeder
             'contact_location' => 'Islamabad, Pakistan',
             'social_github' => 'https://github.com/harisnaseer3',
             'social_twitter' => 'https://twitter.com/harisnaseer3',
-            'social_linkedin' => 'https://linkedin.com/in/harisnaseer3',
+            'social_linkedin' => 'https://linkedin.com/in/haris-naseer-satti',
         ];
 
         foreach ($settings as $key => $value) {

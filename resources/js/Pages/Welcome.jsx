@@ -23,6 +23,7 @@ const Nav = () => {
         { name: 'Home', href: '#' },
         { name: 'About', href: '#about' },
         { name: 'Services', href: '#services' },
+        { name: 'Experience', href: '#experience' },
         { name: 'Portfolio', href: '#portfolio' },
         { name: 'Contact', href: '#contact' }
     ];
@@ -172,10 +173,16 @@ export default function Welcome({ canLogin, canRegister, skills, services, exper
     ];
 
     const displayServices = services?.length > 0 ? services : [
-        { title: 'UI DESIGN', icon: Palette, description: 'Creating beautiful and functional user interfaces.' },
         { title: 'WEB DEV', icon: Code2, description: 'Building responsive and modern web applications.' },
+        { title: 'UI DESIGN', icon: Palette, description: 'Creating beautiful and functional user interfaces.' },
         { title: 'MOBILE APP', icon: Smartphone, description: 'Cross-platform mobile apps with seamless UX.' },
         { title: 'BRANDING', icon: Briefcase, description: 'Developing unique brand identities and logos.' }
+    ];
+    
+    const displayExperiences = experiences?.length > 0 ? experiences : [
+        { company: 'Google', role: 'Creative Designer', duration: '2022 - Present', description: 'Leading core design systems for global products.' },
+        { company: 'Amazon', role: 'UI/UX Designer', duration: '2020 - 2022', description: 'Optimizing conversion for shopping experiences.' },
+        { company: 'Facebook', role: 'Lead Designer', duration: '2018 - 2020', description: 'Redesigning social interaction components.' }
     ];
 
     return (
@@ -288,7 +295,7 @@ export default function Welcome({ canLogin, canRegister, skills, services, exper
                                 <Star fill="white" />
                             </div>
                             <div>
-                                <h4 className="font-bold text-text-main">10+</h4>
+                                <h4 className="font-bold text-text-main">20+</h4>
                                 <p className="text-xs text-text-muted">Projects Done</p>
                             </div>
                         </motion.div>
@@ -344,6 +351,49 @@ export default function Welcome({ canLogin, canRegister, skills, services, exper
                                 icon={service.icon || Palette} 
                             />
                         ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* Experience Section */}
+            <section id="experience" className="section-padding bg-[#F8FAFF]">
+                <div className="container mx-auto px-6">
+                    <div className="text-center mb-16">
+                        <span className="text-primary font-bold uppercase tracking-widest text-sm mb-2 block">Career Path</span>
+                        <h2 className="text-4xl md:text-5xl font-black text-text-main">Work Experience</h2>
+                    </div>
+                    
+                    <div className="relative max-w-4xl mx-auto">
+                        {/* Vertical Line */}
+                        <div className="absolute left-0 md:left-1/2 md:-translate-x-1/2 top-0 w-1 h-full bg-gradient-to-b from-primary/50 via-primary/20 to-transparent rounded-full" />
+                        
+                        <div className="space-y-12">
+                            {displayExperiences.map((exp, idx) => (
+                                <motion.div 
+                                    key={idx}
+                                    initial={{ opacity: 0, x: idx % 2 === 0 ? -50 : 50 }}
+                                    whileInView={{ opacity: 1, x: 0 }}
+                                    viewport={{ once: true }}
+                                    className={`relative flex flex-col ${idx % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-8`}
+                                >
+                                    {/* Timeline Dot */}
+                                    <div className="absolute left-0 md:left-1/2 md:-translate-x-1/2 w-4 h-4 bg-primary rounded-full border-4 border-white shadow-lg z-10" />
+                                    
+                                    {/* Content Card */}
+                                    <div className={`w-full md:w-[45%] ${idx % 2 === 0 ? 'md:text-right' : 'md:text-left'} ml-10 md:ml-0`}>
+                                        <div className="bg-white p-6 rounded-3xl shadow-xl shadow-gray-200/50 border border-border-main hover:border-primary/30 transition-all group">
+                                            <span className="text-primary font-bold text-sm tracking-widest uppercase mb-1 block">{exp.duration}</span>
+                                            <h3 className="text-xl font-black text-text-main mb-1 group-hover:text-primary transition-colors">{exp.role}</h3>
+                                            <p className="font-bold text-text-muted mb-4">{exp.company}</p>
+                                            <p className="text-text-muted leading-relaxed text-sm">{exp.description}</p>
+                                        </div>
+                                    </div>
+                                    
+                                    {/* Spacer for Desktop */}
+                                    <div className="hidden md:block w-[45%]" />
+                                </motion.div>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </section>

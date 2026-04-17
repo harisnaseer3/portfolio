@@ -13,14 +13,14 @@ class PortfolioSeeder extends Seeder
     public function run(): void
     {
         // Skills
-        Skill::create(['name' => 'Figma', 'percentage' => 95, 'icon' => 'Figma']);
-        Skill::create(['name' => 'Sketch', 'percentage' => 85, 'icon' => 'Sketch']);
-        Skill::create(['name' => 'Adobe XD', 'percentage' => 90, 'icon' => 'Adobe-XD']);
-        Skill::create(['name' => 'Photoshop', 'percentage' => 80, 'icon' => 'Photoshop']);
+        Skill::create(['name' => 'PHP & Laravel', 'percentage' => 95, 'icon' => 'PHP & Laravel']);
+        Skill::create(['name' => 'JavaScript & React', 'percentage' => 90, 'icon' => 'JavaScript & React']);
+        Skill::create(['name' => 'MySQL / PostgreSQL', 'percentage' => 95, 'icon' => 'MySQL / PostgreSQL']);
+        Skill::create(['name' => 'Git & Version Control', 'percentage' => 90, 'icon' => 'Git & Version Control']);
 
         // Services
-        Service::create(['title' => 'UI DESIGN', 'description' => 'Creating beautiful and functional user interfaces.', 'icon' => 'Palette', 'order_index' => 1]);
-        Service::create(['title' => 'WEB DEV', 'description' => 'Building responsive and modern web applications.', 'icon' => 'Code2', 'order_index' => 2]);
+        Service::create(['title' => 'WEB DEV', 'description' => 'Building responsive and modern web applications.', 'icon' => 'Code2', 'order_index' => 1]);
+        Service::create(['title' => 'UI DESIGN', 'description' => 'Creating beautiful and functional user interfaces.', 'icon' => 'Palette', 'order_index' => 2]);
         Service::create(['title' => 'MOBILE APP', 'description' => 'Cross-platform mobile apps with seamless UX.', 'icon' => 'Smartphone', 'order_index' => 3]);
         Service::create(['title' => 'BRANDING', 'description' => 'Developing unique brand identities and logos.', 'icon' => 'Briefcase', 'order_index' => 4]);
 
