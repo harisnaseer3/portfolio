@@ -1,4 +1,5 @@
 import ApplicationLogo from '@/Components/ApplicationLogo';
+import BrandLogo from '@/Components/BrandLogo';
 import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
@@ -19,7 +20,7 @@ export default function AuthenticatedLayout({ header, children }) {
                         <div className="flex">
                             <div className="flex shrink-0 items-center">
                                 <Link href="/" className="flex items-center gap-2 font-black text-primary text-xl tracking-tighter uppercase">
-                                    <span className="w-8 h-8 bg-primary text-white rounded-lg flex items-center justify-center text-sm shadow-lg shadow-primary/20">M</span>
+                                    <BrandLogo className="h-8" />
                                     ADMIN
                                 </Link>
                             </div>
@@ -54,6 +55,12 @@ export default function AuthenticatedLayout({ header, children }) {
                                     active={route().current('admin.experiences.*')}
                                 >
                                     Experiences
+                                </NavLink>
+                                <NavLink
+                                    href={route('admin.settings.index')}
+                                    active={route().current('admin.settings.*')}
+                                >
+                                    Settings
                                 </NavLink>
                             </div>
                         </div>
@@ -164,6 +171,12 @@ export default function AuthenticatedLayout({ header, children }) {
                             active={route().current('admin.projects.*')}
                         >
                             Projects
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('admin.settings.index')}
+                            active={route().current('admin.settings.*')}
+                        >
+                            Settings
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
                             href={route('admin.skills.index')}

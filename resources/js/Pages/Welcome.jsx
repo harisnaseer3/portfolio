@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Head, Link } from '@inertiajs/react';
+import React, { useState, useEffect, forwardRef } from 'react';
+import BrandLogo from '@/Components/BrandLogo';
+import IconResolver from '@/Components/IconResolver';
+import { Head, Link, usePage } from '@inertiajs/react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
     Github, Twitter, Linkedin, Mail, ExternalLink, 
@@ -28,9 +30,8 @@ const Nav = () => {
     return (
         <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled ? 'glass py-4 shadow-sm' : 'bg-transparent py-6'}`}>
             <div className="container mx-auto px-6 flex justify-between items-center">
-                <Link href="/" className="text-2xl font-bold text-primary flex items-center gap-2">
-                    <span className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-white">M</span>
-                    Marshall
+                <Link href="/" className="flex items-center gap-2">
+                    <BrandLogo className="h-10" showText={true} />
                 </Link>
                 
                 {/* Desktop Links */}
@@ -103,15 +104,17 @@ const SkillBar = ({ skill, percentage }) => (
     </div>
 );
 
-const ServiceCard = ({ title, desc, icon: Icon, index }) => (
+const ServiceCard = forwardRef(({ index, title, desc, icon }, ref) => (
     <motion.div 
-        initial={{ opacity: 0, y: 20 }}
+        ref={ref}
+        initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
         transition={{ delay: index * 0.1 }}
         className="bg-white p-8 rounded-3xl border border-border-main card-hover group"
     >
         <div className="w-16 h-16 bg-accent-blue-soft rounded-2xl flex items-center justify-center text-primary mb-6 group-hover:bg-primary group-hover:text-white transition-all">
-            <Icon size={32} />
+            <IconResolver icon={icon} size={32} />
         </div>
         <h3 className="text-xl font-bold text-text-main mb-4">{title}</h3>
         <p className="text-text-muted leading-relaxed">{desc}</p>
@@ -119,10 +122,11 @@ const ServiceCard = ({ title, desc, icon: Icon, index }) => (
             Read More <ChevronRight size={18} />
         </div>
     </motion.div>
-);
+));
 
-const ProjectCard = ({ project, index }) => (
+const ProjectCard = forwardRef(({ project, index }, ref) => (
     <motion.div 
+        ref={ref}
         layout
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -130,11 +134,11 @@ const ProjectCard = ({ project, index }) => (
         transition={{ duration: 0.3 }}
         className="relative group rounded-3xl overflow-hidden shadow-lg aspect-auto bg-slate-200"
     >
-        {project.image_url && project.image_url !== '/images/placeholder.webp' ? (
+        {project.image_url && !project.image_url.includes('placeholder.webp') && !project.image_url.includes('project1.webp') ? (
             <img src={project.image_url} alt={project.title} className="w-full h-72 object-cover group-hover:scale-110 transition-transform duration-500" />
         ) : (
             <div className="w-full h-72 bg-gradient-to-br from-primary/10 to-primary/30 flex items-center justify-center">
-                <Palette size={48} className="text-primary/20" />
+                <IconResolver icon="Palette" size={48} className="text-primary/20" />
             </div>
         )}
         
@@ -148,7 +152,7 @@ const ProjectCard = ({ project, index }) => (
             </div>
         </div>
     </motion.div>
-);
+));
 
 export default function Welcome({ canLogin, canRegister, skills, services, experiences, projects }) {
     const [activeTab, setActiveTab] = useState('ALL');
@@ -188,7 +192,7 @@ export default function Welcome({ canLogin, canRegister, skills, services, exper
                             animate={{ opacity: 1, x: 0 }}
                             className="bg-accent-blue-soft text-primary font-bold px-4 py-1.5 rounded-full inline-block mb-6"
                         >
-                            Hello, I'm Marshall 👋
+                            Hello, I'm Haris 👋
                         </motion.div>
                         <motion.h1 
                             initial={{ opacity: 0, y: 30 }}
@@ -234,12 +238,26 @@ export default function Welcome({ canLogin, canRegister, skills, services, exper
                             transition={{ duration: 0.8 }}
                             className="relative z-10 w-full max-w-md mx-auto aspect-square rounded-[3rem] overflow-hidden bg-white shadow-2xl p-4 border border-border-main"
                         >
-                            <div className="w-full h-full rounded-[2.5rem] bg-slate-100 flex items-center justify-center overflow-hidden">
-                                <img src="/images/profile.webp" alt="Marshall" className="w-full h-full object-cover" />
-                                {/* Placeholder if img missing */}
-                                <div className="absolute inset-0 bg-gradient-to-tr from-primary/10 to-transparent flex items-center justify-center -z-10">
-                                    <div className="w-64 h-64 bg-primary/5 blur-3xl rounded-full" />
-                                </div>
+                            <div className="w-full h-full rounded-[2.5rem] bg-[#F8FAFF] flex items-center justify-center overflow-hidden relative">
+                                {usePage().props.settings?.hero_image_url ? (
+                                    <img 
+                                        src={usePage().props.settings.hero_image_url} 
+                                        alt={usePage().props.settings.site_name || 'Hero'} 
+                                        className="w-full h-full object-cover shadow-inner"
+                                    />
+                                ) : (
+                                    <div className="w-full h-full bg-gradient-to-br from-primary/5 via-white to-secondary/5 flex items-center justify-center relative overflow-hidden">
+                                        <div className="absolute inset-0 opacity-20">
+                                            <div className="absolute top-10 left-10 w-32 h-32 border-2 border-primary/20 rounded-full" />
+                                            <div className="absolute bottom-10 right-10 w-48 h-48 border-2 border-secondary/20 rounded-full" />
+                                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 border-2 border-primary/10 rounded-[3rem] rotate-12" />
+                                        </div>
+                                        <div className="relative text-center z-10">
+                                            <BrandLogo className="h-16 opacity-30 grayscale" />
+                                            <p className="mt-4 text-[10px] uppercase font-black tracking-[0.3em] text-gray-300">Awaiting Profile Photo</p>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         </motion.div>
                         
@@ -432,12 +450,11 @@ export default function Welcome({ canLogin, canRegister, skills, services, exper
                     {/* Footer Grid */}
                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-20 mb-20 border-b border-white/10 pb-20">
                         <div className="col-span-2 lg:col-span-1">
-                            <Link href="/" className="text-3xl font-bold text-white flex items-center gap-2 mb-8">
-                                <span className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">M</span>
-                                Marshall
+                            <Link href="/" className="mb-8 block">
+                                <BrandLogo className="h-10" showText={true} />
                             </Link>
                             <p className="text-white/60 leading-relaxed mb-8 max-w-xs">
-                                Specializing in crafting high-end digital products with a focus on user-centric design and modern development.
+                                {usePage().props.settings?.footer_description || 'Specializing in crafting high-end digital products with a focus on user-centric design and modern development.'}
                             </p>
                             <div className="flex gap-4">
                                 {[Github, Twitter, Linkedin].map((Icon, i) => (
@@ -479,7 +496,7 @@ export default function Welcome({ canLogin, canRegister, skills, services, exper
                     {/* Bottom Bar */}
                     <div className="flex flex-col md:flex-row justify-between items-center gap-6">
                         <p className="text-white/40 text-sm">
-                            © {new Date().getFullYear()} <span className="text-white font-bold">Marshall Portfolio</span>. All rights reserved.
+                            {usePage().props.settings?.footer_copyright || `© ${new Date().getFullYear()} Haris Naseer. All rights reserved.`}
                         </p>
                         <div className="flex items-center gap-2 text-white/40 text-sm">
                             Created with 
