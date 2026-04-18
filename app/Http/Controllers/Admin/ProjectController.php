@@ -32,6 +32,7 @@ class ProjectController extends Controller
             $validated['image_url'] = Storage::url($path);
         }
 
+        unset($validated['image']);
         Project::create($validated);
 
         return redirect()->back()->with('success', 'Project created successfully.');
@@ -58,6 +59,7 @@ class ProjectController extends Controller
             $validated['image_url'] = Storage::url($path);
         }
 
+        unset($validated['image']);
         $project->update($validated);
 
         return redirect()->back()->with('success', 'Project updated successfully.');

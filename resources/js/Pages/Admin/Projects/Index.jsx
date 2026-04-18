@@ -13,7 +13,7 @@ export default function Index({ auth, projects }) {
     const [editingProject, setEditingProject] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const { data, setData, post, processing, errors, reset, clearErrors } = useForm({
+    const { data, setData, post, delete: destroy, processing, errors, reset, clearErrors, transform } = useForm({
         title: '',
         category: '',
         link: '',
@@ -49,12 +49,13 @@ export default function Index({ auth, projects }) {
         
         // Use post with _method spoofing for file uploads on update
         if (editingProject) {
+            transform((data) => ({
+                ...data,
+                _method: 'put',
+            }));
             post(route('admin.projects.update', editingProject.id), {
                 forceFormData: true,
                 onSuccess: () => closeModal(),
-                onBefore: (request) => {
-                    request.data._method = 'put';
-                }
             });
         } else {
             post(route('admin.projects.store'), {
@@ -66,9 +67,9 @@ export default function Index({ auth, projects }) {
 
     const deleteProject = (id) => {
         if (confirm('Are you sure you want to delete this project?')) {
-            post(route('admin.projects.destroy', id), {
-                onBefore: (request) => {
-                    request.data._method = 'delete';
+            destroy(route('admin.projects.destroy', id), {
+                onSuccess: () => {
+                    // Optional: add success notification
                 }
             });
         }

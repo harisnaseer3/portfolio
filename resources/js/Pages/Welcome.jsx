@@ -158,11 +158,14 @@ const ProjectCard = forwardRef(({ project, index }, ref) => (
 export default function Welcome({ canLogin, canRegister, skills, services, experiences, projects }) {
     const { settings } = usePage().props;
     const [activeTab, setActiveTab] = useState('ALL');
+    const [showAllProjects, setShowAllProjects] = useState(false);
     const categories = ['ALL', 'MOBILE APP', 'WEB APP', 'UI/UX'];
     
     const filteredProjects = activeTab === 'ALL' 
         ? projects 
         : projects?.filter(p => p.category === activeTab);
+
+    const projectsToDisplay = showAllProjects ? filteredProjects : filteredProjects?.slice(0, 4);
 
     // Fallback data if DB is empty
     const displaySkills = skills?.length > 0 ? skills : [
@@ -421,17 +424,22 @@ export default function Welcome({ canLogin, canRegister, skills, services, exper
 
                     <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-10">
                         <AnimatePresence mode="popLayout">
-                            {filteredProjects?.map((project, idx) => (
+                            {projectsToDisplay?.map((project, idx) => (
                                 <ProjectCard key={project.id || idx} project={project} index={idx} />
                             ))}
                         </AnimatePresence>
                     </div>
 
-                    <div className="mt-20 text-center">
-                        <button className="px-10 py-4 border-2 border-primary text-primary rounded-full font-bold hover:bg-primary hover:text-white transition-all shadow-lg hover:shadow-primary/20">
-                            View All Projects
-                        </button>
-                    </div>
+                    {filteredProjects?.length > 4 && !showAllProjects && (
+                        <div className="mt-20 text-center">
+                            <button 
+                                onClick={() => setShowAllProjects(true)}
+                                className="px-10 py-4 border-2 border-primary text-primary rounded-full font-bold hover:bg-primary hover:text-white transition-all shadow-lg hover:shadow-primary/20"
+                            >
+                                View All Projects
+                            </button>
+                        </div>
+                    )}
                 </div>
             </section>
 
