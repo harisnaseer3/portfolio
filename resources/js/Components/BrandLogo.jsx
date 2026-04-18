@@ -7,11 +7,13 @@ export default function BrandLogo({ className = "h-8", showText = false }) {
     return (
         <div className={`flex items-center gap-3 ${className}`}>
             {settings?.logo_url ? (
-                <img 
-                    src={settings.logo_url} 
-                    alt={settings.site_name || 'Logo'} 
-                    className="h-full w-auto object-contain"
-                />
+                <div className="h-full aspect-square rounded-full overflow-hidden border-2 border-primary/20">
+                    <img 
+                        src={settings.logo_url} 
+                        alt={settings.site_name || 'Logo'} 
+                        className="h-full w-full object-cover"
+                    />
+                </div>
             ) : (
                 <svg 
                     viewBox="0 0 100 100" 

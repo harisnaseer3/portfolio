@@ -40,9 +40,11 @@ const Nav = ({ onHireMeClick, theme, toggleTheme, settings }) => {
                 <div className="flex items-center gap-4 group cursor-pointer" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
                     <div className="flex items-center gap-2">
                         {settings?.logo_url ? (
-                            <img src={settings.logo_url} alt="Logo" className="h-10 w-auto object-contain" />
+                            <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-primary/20">
+                                <img src={settings.logo_url} alt="Logo" className="w-full h-full object-cover" />
+                            </div>
                         ) : (
-                            <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white rotate-3 group-hover:rotate-12 transition-transform font-black text-xl shadow-lg shadow-primary/20">H</div>
+                            <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white rotate-3 group-hover:rotate-12 transition-transform font-black text-xl shadow-lg shadow-primary/20">H</div>
                         )}
                     </div>
                     
@@ -677,9 +679,11 @@ export default function Welcome({ canLogin, canRegister, skills, services, exper
                         <div className="flex items-center gap-4 group cursor-pointer" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
                             <div className="flex items-center gap-2">
                                 {settings?.logo_url ? (
-                                    <img src={settings.logo_url} alt="Logo" className="h-10 w-auto object-contain" />
+                                    <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-primary/20">
+                                        <img src={settings.logo_url} alt="Logo" className="w-full h-full object-cover" />
+                                    </div>
                                 ) : (
-                                    <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white rotate-3 group-hover:rotate-12 transition-transform font-black text-xl shadow-lg shadow-primary/20">H</div>
+                                    <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white rotate-3 group-hover:rotate-12 transition-transform font-black text-xl shadow-lg shadow-primary/20">H</div>
                                 )}
                             </div>
                             

@@ -7,14 +7,6 @@
         <title inertia>{{ config('app.name', 'Haris Naseer Satti') }}</title>
 
         <!-- Favicon -->
-        @php
-            $favicon = \App\Models\Setting::where('key', 'logo_url')->value('value');
-        @endphp
-        @if($favicon)
-            <link rel="icon" type="image/x-icon" href="{{ asset($favicon) }}">
-        @else
-            <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
-        @endif
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
