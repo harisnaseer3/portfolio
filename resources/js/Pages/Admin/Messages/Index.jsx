@@ -1,9 +1,10 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, useForm, router } from '@inertiajs/react';
+import { Head, useForm, router, usePage } from '@inertiajs/react';
 import { Mail, Trash2, CheckCircle, Clock, Search, MessageSquare, ChevronRight, X } from 'lucide-react';
 import { useState } from 'react';
 import PrimaryButton from '@/Components/PrimaryButton';
 import SecondaryButton from '@/Components/SecondaryButton';
+import Modal from '@/Components/Modal';
 
 export default function Index({ auth, messages }) {
     const [selectedMessage, setSelectedMessage] = useState(null);
@@ -69,7 +70,12 @@ export default function Index({ auth, messages }) {
                                     filteredMessages.map((msg) => (
                                         <button 
                                             key={msg.id}
-                                            onClick={() => setSelectedMessage(msg)}
+                                            onClick={() => {
+                                                setSelectedMessage(msg);
+                                                if (!msg.is_read) {
+                                                    markAsRead(msg.id, msg.is_read);
+                                                }
+                                            }}
                                             className={`w-full p-6 text-left border-b border-gray-50 transition-all hover:bg-accent-blue-soft/30 flex gap-4 items-start relative ${selectedMessage?.id === msg.id ? 'bg-accent-blue-soft' : ''}`}
                                         >
                                             {!msg.is_read && (
@@ -155,7 +161,8 @@ export default function Index({ auth, messages }) {
                                     
                                     <div className="p-8 bg-white border-t border-gray-100">
                                         <a 
-                                            href={`mailto:${selectedMessage.email}?subject=Re: ${selectedMessage.subject}`}
+                                            href={`https://mail.google.com/mail/?view=cm&fs=1&to=${selectedMessage.email}&su=${encodeURIComponent('Re: ' + selectedMessage.subject)}`}
+                                            target="_blank"
                                             className="inline-flex items-center gap-2 px-10 py-4 bg-primary text-white rounded-2xl font-bold hover:bg-primary-hover transition-all shadow-xl shadow-primary/20"
                                         >
                                             <Mail size={18} /> Reply to {selectedMessage.first_name}
