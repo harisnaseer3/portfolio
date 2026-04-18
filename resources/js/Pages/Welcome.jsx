@@ -15,7 +15,7 @@ const IconResolver = ({ iconName, size = 24, className = "" }) => {
     return <IconComponent size={size} className={className} />;
 };
 
-const Nav = ({ onHireMeClick, theme, toggleTheme }) => {
+const Nav = ({ onHireMeClick, theme, toggleTheme, settings }) => {
     const [scrolled, setScrolled] = useState(false);
     const [mobileMenu, setMobileMenu] = useState(false);
 
@@ -37,9 +37,23 @@ const Nav = ({ onHireMeClick, theme, toggleTheme }) => {
     return (
         <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? 'glass py-4 shadow-xl' : 'py-8'}`}>
             <div className="container mx-auto px-6 flex justify-between items-center">
-                <div className="flex items-center gap-2 font-black text-primary text-2xl tracking-tighter uppercase relative group">
-                    <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white rotate-3 group-hover:rotate-12 transition-transform">H</div>
-                    <span className="dark:text-white">POR<span className="text-primary">TFOLIO</span></span>
+                <div className="flex items-center gap-4 group">
+                    <div className="flex items-center gap-2">
+                        {settings?.logo_url ? (
+                            <img src={settings.logo_url} alt="Logo" className="h-10 w-auto object-contain" />
+                        ) : (
+                            <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white rotate-3 group-hover:rotate-12 transition-transform font-black text-xl shadow-lg shadow-primary/20">H</div>
+                        )}
+                    </div>
+                    
+                    <div className="flex flex-col border-l border-gray-200 dark:border-slate-800 pl-4">
+                        <span className="text-lg font-black tracking-tighter text-gray-900 dark:text-white uppercase leading-none">
+                            {settings?.site_name || "Haris Naseer"}
+                        </span>
+                        <span className="text-[10px] font-bold text-primary dark:text-primary-light uppercase tracking-[0.2em] mt-1 leading-none">
+                            Web Developer
+                        </span>
+                    </div>
                 </div>
 
                 <div className="hidden md:flex items-center gap-10">
@@ -262,6 +276,7 @@ export default function Welcome({ canLogin, canRegister, skills, services, exper
                 onHireMeClick={() => setIsHireMeModalOpen(true)} 
                 theme={theme}
                 toggleTheme={toggleTheme}
+                settings={settings}
             />
 
             {/* Hero Section */}
