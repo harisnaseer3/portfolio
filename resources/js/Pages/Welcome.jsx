@@ -159,6 +159,9 @@ export default function Welcome({ canLogin, canRegister, skills, services, exper
     const { settings } = usePage().props;
     const [activeTab, setActiveTab] = useState('ALL');
     const [showAllProjects, setShowAllProjects] = useState(false);
+    const [showAllSkills, setShowAllSkills] = useState(false);
+    const [showAllServices, setShowAllServices] = useState(false);
+    const [showAllExperiences, setShowAllExperiences] = useState(false);
     const categories = ['ALL', 'MOBILE APP', 'WEB APP', 'UI/UX'];
     
     const filteredProjects = activeTab === 'ALL' 
@@ -187,6 +190,10 @@ export default function Welcome({ canLogin, canRegister, skills, services, exper
         { company: 'Amazon', role: 'UI/UX Designer', duration: '2020 - 2022', description: 'Optimizing conversion for shopping experiences.' },
         { company: 'Facebook', role: 'Lead Designer', duration: '2018 - 2020', description: 'Redesigning social interaction components.' }
     ];
+
+    const skillsToDisplay = showAllSkills ? displaySkills : displaySkills?.slice(0, 4);
+    const servicesToDisplay = showAllServices ? displayServices : displayServices?.slice(0, 4);
+    const experiencesToDisplay = showAllExperiences ? displayExperiences : displayExperiences?.slice(0, 4);
 
     return (
         <div className="min-h-screen bg-[#F8FAFF]">
@@ -329,10 +336,31 @@ export default function Welcome({ canLogin, canRegister, skills, services, exper
                     </div>
                     
                     <div className="grid md:grid-cols-2 gap-x-16 gap-y-8 max-w-4xl mx-auto">
-                        {displaySkills.map((s, idx) => (
-                            <SkillBar key={idx} skill={s.name} percentage={s.percentage} />
-                        ))}
+                        <AnimatePresence mode="popLayout">
+                            {skillsToDisplay.map((s, idx) => (
+                                <motion.div
+                                    key={s.id || idx}
+                                    layout
+                                    initial={{ opacity: 0, scale: 0.9 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    exit={{ opacity: 0, scale: 0.9 }}
+                                >
+                                    <SkillBar skill={s.name} percentage={s.percentage} />
+                                </motion.div>
+                            ))}
+                        </AnimatePresence>
                     </div>
+
+                    {displaySkills.length > 4 && !showAllSkills && (
+                        <div className="mt-12 text-center">
+                            <button 
+                                onClick={() => setShowAllSkills(true)}
+                                className="px-8 py-3 border-2 border-primary text-primary rounded-full font-bold hover:bg-primary hover:text-white transition-all shadow-lg hover:shadow-primary/20"
+                            >
+                                View More Skills
+                            </button>
+                        </div>
+                    )}
                 </div>
             </section>
 
@@ -345,16 +373,29 @@ export default function Welcome({ canLogin, canRegister, skills, services, exper
                     </div>
                     
                     <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                        {displayServices.map((service, idx) => (
-                            <ServiceCard 
-                                key={idx} 
-                                index={idx}
-                                title={service.title} 
-                                desc={service.description} 
-                                icon={service.icon || Palette} 
-                            />
-                        ))}
+                        <AnimatePresence mode="popLayout">
+                            {servicesToDisplay.map((service, idx) => (
+                                <ServiceCard 
+                                    key={service.id || idx} 
+                                    index={idx}
+                                    title={service.title} 
+                                    desc={service.description} 
+                                    icon={service.icon || Palette} 
+                                />
+                            ))}
+                        </AnimatePresence>
                     </div>
+
+                    {displayServices.length > 4 && !showAllServices && (
+                        <div className="mt-12 text-center">
+                            <button 
+                                onClick={() => setShowAllServices(true)}
+                                className="px-8 py-3 border-2 border-primary text-primary rounded-full font-bold hover:bg-primary hover:text-white transition-all shadow-lg hover:shadow-primary/20"
+                            >
+                                View All Services
+                            </button>
+                        </div>
+                    )}
                 </div>
             </section>
 
@@ -371,32 +412,47 @@ export default function Welcome({ canLogin, canRegister, skills, services, exper
                         <div className="absolute left-0 md:left-1/2 md:-translate-x-1/2 top-0 w-1 h-full bg-gradient-to-b from-primary/50 via-primary/20 to-transparent rounded-full" />
                         
                         <div className="space-y-12">
-                            {displayExperiences.map((exp, idx) => (
-                                <motion.div 
-                                    key={idx}
-                                    initial={{ opacity: 0, x: idx % 2 === 0 ? -50 : 50 }}
-                                    whileInView={{ opacity: 1, x: 0 }}
-                                    viewport={{ once: true }}
-                                    className={`relative flex flex-col ${idx % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-8`}
-                                >
-                                    {/* Timeline Dot */}
-                                    <div className="absolute left-0 md:left-1/2 md:-translate-x-1/2 w-4 h-4 bg-primary rounded-full border-4 border-white shadow-lg z-10" />
-                                    
-                                    {/* Content Card */}
-                                    <div className={`w-full md:w-[45%] ${idx % 2 === 0 ? 'md:text-right' : 'md:text-left'} ml-10 md:ml-0`}>
-                                        <div className="bg-white p-6 rounded-3xl shadow-xl shadow-gray-200/50 border border-border-main hover:border-primary/30 transition-all group">
-                                            <span className="text-primary font-bold text-sm tracking-widest uppercase mb-1 block">{exp.duration}</span>
-                                            <h3 className="text-xl font-black text-text-main mb-1 group-hover:text-primary transition-colors">{exp.role}</h3>
-                                            <p className="font-bold text-text-muted mb-4">{exp.company}</p>
-                                            <p className="text-text-muted leading-relaxed text-sm">{exp.description}</p>
+                            <AnimatePresence mode="popLayout">
+                                {experiencesToDisplay.map((exp, idx) => (
+                                    <motion.div 
+                                        key={exp.id || idx}
+                                        layout
+                                        initial={{ opacity: 0, x: idx % 2 === 0 ? -50 : 50 }}
+                                        whileInView={{ opacity: 1, x: 0 }}
+                                        viewport={{ once: true }}
+                                        exit={{ opacity: 0, scale: 0.9 }}
+                                        className={`relative flex flex-col ${idx % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-8`}
+                                    >
+                                        {/* Timeline Dot */}
+                                        <div className="absolute left-0 md:left-1/2 md:-translate-x-1/2 w-4 h-4 bg-primary rounded-full border-4 border-white shadow-lg z-10" />
+                                        
+                                        {/* Content Card */}
+                                        <div className={`w-full md:w-[45%] ${idx % 2 === 0 ? 'md:text-right' : 'md:text-left'} ml-10 md:ml-0`}>
+                                            <div className="bg-white p-6 rounded-3xl shadow-xl shadow-gray-200/50 border border-border-main hover:border-primary/30 transition-all group">
+                                                <span className="text-primary font-bold text-sm tracking-widest uppercase mb-1 block">{exp.duration}</span>
+                                                <h3 className="text-xl font-black text-text-main mb-1 group-hover:text-primary transition-colors">{exp.role}</h3>
+                                                <p className="font-bold text-text-muted mb-4">{exp.company}</p>
+                                                <p className="text-text-muted leading-relaxed text-sm">{exp.description}</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                    
-                                    {/* Spacer for Desktop */}
-                                    <div className="hidden md:block w-[45%]" />
-                                </motion.div>
-                            ))}
+                                        
+                                        {/* Spacer for Desktop */}
+                                        <div className="hidden md:block w-[45%]" />
+                                    </motion.div>
+                                ))}
+                            </AnimatePresence>
                         </div>
+
+                        {displayExperiences.length > 4 && !showAllExperiences && (
+                            <div className="mt-20 text-center">
+                                <button 
+                                    onClick={() => setShowAllExperiences(true)}
+                                    className="px-10 py-4 border-2 border-primary text-primary rounded-full font-bold hover:bg-primary hover:text-white transition-all shadow-lg hover:shadow-primary/20"
+                                >
+                                    View More Experience
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </div>
             </section>
