@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\ContactController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -13,6 +14,8 @@ Route::middleware('guest')->group(function () {
     Route::post('admin-login', [AuthenticatedSessionController::class, 'store']);
 });
 
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/admin', function () {
         return Inertia::render('Dashboard', [
@@ -21,6 +24,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 'skills' => \App\Models\Skill::count(),
                 'services' => \App\Models\Service::count(),
                 'experiences' => \App\Models\Experience::count(),
+                'messages' => \App\Models\ContactMessage::count(),
             ]
         ]);
     })->name('dashboard');
@@ -30,6 +34,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('services', \App\Http\Controllers\Admin\ServiceController::class);
         Route::resource('experiences', \App\Http\Controllers\Admin\ExperienceController::class);
         Route::resource('projects', \App\Http\Controllers\Admin\ProjectController::class);
+        Route::resource('messages', \App\Http\Controllers\Admin\MessageController::class)->only(['index', 'update', 'destroy']);
 
         Route::get('settings', [\App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings.index');
         Route::post('settings', [\App\Http\Controllers\Admin\SettingController::class, 'update'])->name('settings.update');
@@ -42,4 +47,3 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 });
-

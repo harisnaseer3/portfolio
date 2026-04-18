@@ -1,12 +1,12 @@
 import React, { useState, useEffect, forwardRef } from 'react';
 import BrandLogo from '@/Components/BrandLogo';
 import IconResolver from '@/Components/IconResolver';
-import { Head, Link, usePage } from '@inertiajs/react';
+import { Head, Link, usePage, useForm } from '@inertiajs/react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
     Github, Twitter, Linkedin, Mail, ExternalLink, 
     Palette, Code2, Smartphone, Briefcase, Rocket,
-    ArrowRight, Star, MapPin, Phone, Send, Menu, X, ChevronRight, Download
+    ArrowRight, Star, MapPin, Phone, Send, Menu, X, ChevronRight, Download, CheckCircle
 } from 'lucide-react';
 
 const Nav = () => {
@@ -163,6 +163,22 @@ export default function Welcome({ canLogin, canRegister, skills, services, exper
     const [showAllServices, setShowAllServices] = useState(false);
     const [showAllExperiences, setShowAllExperiences] = useState(false);
     const categories = ['ALL', 'MOBILE APP', 'WEB APP', 'UI/UX'];
+    
+    const { data: contactData, setData: setContactData, post: postContact, processing: processingContact, reset: resetContact, errors: contactErrors } = useForm({
+        first_name: '',
+        last_name: '',
+        email: '',
+        subject: '',
+        message: '',
+    });
+
+    const handleContactSubmit = (e) => {
+        e.preventDefault();
+        postContact(route('contact.store'), {
+            preserveScroll: true,
+            onSuccess: () => resetContact(),
+        });
+    };
     
     const filteredProjects = activeTab === 'ALL' 
         ? projects 
@@ -549,27 +565,84 @@ export default function Welcome({ canLogin, canRegister, skills, services, exper
                         </div>
                         
                         <div className="lg:w-1/2 p-12 lg:p-20">
-                            <form className="space-y-6">
+                            {usePage().props.flash?.success && (
+                                <div className="mb-8 p-6 bg-green-50 border border-green-100 text-green-700 rounded-3xl flex items-center gap-4 animate-in fade-in slide-in-from-top-4">
+                                    <div className="w-12 h-12 bg-green-500 rounded-2xl flex items-center justify-center text-white shrink-0">
+                                        <CheckCircle size={24} />
+                                    </div>
+                                    <p className="font-bold">{usePage().props.flash.success}</p>
+                                </div>
+                            )}
+
+                            <form onSubmit={handleContactSubmit} className="space-y-6">
                                 <div className="grid md:grid-cols-2 gap-6">
                                     <div>
                                         <label className="block text-sm font-black uppercase text-text-muted mb-2">First Name</label>
-                                        <input type="text" className="w-full px-6 py-4 bg-accent-blue-soft border-0 rounded-2xl focus:ring-2 focus:ring-primary outline-none transition-all" placeholder="John" />
+                                        <input 
+                                            type="text" 
+                                            required
+                                            value={contactData.first_name}
+                                            onChange={e => setContactData('first_name', e.target.value)}
+                                            className="w-full px-6 py-4 bg-accent-blue-soft border-0 rounded-2xl focus:ring-2 focus:ring-primary outline-none transition-all" 
+                                            placeholder="John" 
+                                        />
+                                        {contactErrors.first_name && <p className="text-red-500 text-xs mt-1 font-bold">{contactErrors.first_name}</p>}
                                     </div>
                                     <div>
                                         <label className="block text-sm font-black uppercase text-text-muted mb-2">Last Name</label>
-                                        <input type="text" className="w-full px-6 py-4 bg-accent-blue-soft border-0 rounded-2xl focus:ring-2 focus:ring-primary outline-none transition-all" placeholder="Doe" />
+                                        <input 
+                                            type="text" 
+                                            required
+                                            value={contactData.last_name}
+                                            onChange={e => setContactData('last_name', e.target.value)}
+                                            className="w-full px-6 py-4 bg-accent-blue-soft border-0 rounded-2xl focus:ring-2 focus:ring-primary outline-none transition-all" 
+                                            placeholder="Doe" 
+                                        />
+                                        {contactErrors.last_name && <p className="text-red-500 text-xs mt-1 font-bold">{contactErrors.last_name}</p>}
                                     </div>
                                 </div>
                                 <div>
+                                    <label className="block text-sm font-black uppercase text-text-muted mb-2">Email Address</label>
+                                    <input 
+                                        type="email" 
+                                        required
+                                        value={contactData.email}
+                                        onChange={e => setContactData('email', e.target.value)}
+                                        className="w-full px-6 py-4 bg-accent-blue-soft border-0 rounded-2xl focus:ring-2 focus:ring-primary outline-none transition-all" 
+                                        placeholder="john@example.com" 
+                                    />
+                                    {contactErrors.email && <p className="text-red-500 text-xs mt-1 font-bold">{contactErrors.email}</p>}
+                                </div>
+                                <div>
                                     <label className="block text-sm font-black uppercase text-text-muted mb-2">Subject</label>
-                                    <input type="text" className="w-full px-6 py-4 bg-accent-blue-soft border-0 rounded-2xl focus:ring-2 focus:ring-primary outline-none transition-all" placeholder="Project Inquiry" />
+                                    <input 
+                                        type="text" 
+                                        required
+                                        value={contactData.subject}
+                                        onChange={e => setContactData('subject', e.target.value)}
+                                        className="w-full px-6 py-4 bg-accent-blue-soft border-0 rounded-2xl focus:ring-2 focus:ring-primary outline-none transition-all" 
+                                        placeholder="Project Inquiry" 
+                                    />
+                                    {contactErrors.subject && <p className="text-red-500 text-xs mt-1 font-bold">{contactErrors.subject}</p>}
                                 </div>
                                 <div>
                                     <label className="block text-sm font-black uppercase text-text-muted mb-2">Message</label>
-                                    <textarea rows="5" className="w-full px-6 py-4 bg-accent-blue-soft border-0 rounded-2xl focus:ring-2 focus:ring-primary outline-none transition-all resize-none" placeholder="Tell me about your project..."></textarea>
+                                    <textarea 
+                                        rows="5" 
+                                        required
+                                        value={contactData.message}
+                                        onChange={e => setContactData('message', e.target.value)}
+                                        className="w-full px-6 py-4 bg-accent-blue-soft border-0 rounded-2xl focus:ring-2 focus:ring-primary outline-none transition-all resize-none" 
+                                        placeholder="Tell me about your project..."
+                                    ></textarea>
+                                    {contactErrors.message && <p className="text-red-500 text-xs mt-1 font-bold">{contactErrors.message}</p>}
                                 </div>
-                                <button className="w-full py-5 bg-primary text-white rounded-2xl font-bold text-lg hover:bg-primary-hover shadow-xl shadow-primary/20 flex items-center justify-center gap-3 group transition-all">
-                                    Send Message <Send size={20} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                                <button 
+                                    type="submit"
+                                    disabled={processingContact}
+                                    className="w-full py-5 bg-primary text-white rounded-2xl font-bold text-lg hover:bg-primary-hover shadow-xl shadow-primary/20 flex items-center justify-center gap-3 group transition-all disabled:opacity-50"
+                                >
+                                    {processingContact ? 'Sending...' : 'Send Message'} <Send size={20} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                                 </button>
                             </form>
                         </div>

@@ -62,6 +62,18 @@ export default function AuthenticatedLayout({ header, children }) {
                                 >
                                     Settings
                                 </NavLink>
+                                <NavLink
+                                    href={route('admin.messages.index')}
+                                    active={route().current('admin.messages.*')}
+                                    className="flex items-center gap-2"
+                                >
+                                    Messages
+                                    {usePage().props.unreadMessagesCount > 0 && (
+                                        <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-black text-white shadow-sm shadow-red-100 animate-pulse">
+                                            {usePage().props.unreadMessagesCount}
+                                        </span>
+                                    )}
+                                </NavLink>
                             </div>
                         </div>
 
@@ -195,6 +207,18 @@ export default function AuthenticatedLayout({ header, children }) {
                             active={route().current('admin.experiences.*')}
                         >
                             Experiences
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('admin.messages.index')}
+                            active={route().current('admin.messages.*')}
+                            className="flex items-center justify-between"
+                        >
+                            <span>Messages</span>
+                            {usePage().props.unreadMessagesCount > 0 && (
+                                <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-red-500 px-2 text-[10px] font-black text-white">
+                                    {usePage().props.unreadMessagesCount}
+                                </span>
+                            )}
                         </ResponsiveNavLink>
                     </div>
 
