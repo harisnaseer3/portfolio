@@ -31,25 +31,30 @@ class SettingController extends Controller
             'social_linkedin' => 'nullable|url|max:255',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'hero_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:4096',
+            'resume' => 'nullable|file|mimes:pdf,doc,docx|max:5120',
         ]);
 
         foreach ($validated as $key => $value) {
-            if ($key === 'logo' || $key === 'hero_image') continue;
+            if (in_array($key, ['logo', 'hero_image', 'resume'])) continue;
             Setting::updateOrCreate(['key' => $key], ['value' => $value]);
         }
 
         if ($request->hasFile('logo')) {
-            $this->updateImageSetting('logo_url', $request->file('logo'), 'branding');
+            $this->updateFileSetting('logo_url', $request->file('logo'), 'branding');
         }
 
         if ($request->hasFile('hero_image')) {
-            $this->updateImageSetting('hero_image_url', $request->file('hero_image'), 'hero');
+            $this->updateFileSetting('hero_image_url', $request->file('hero_image'), 'hero');
+        }
+
+        if ($request->hasFile('resume')) {
+            $this->updateFileSetting('resume_url', $request->file('resume'), 'resumes');
         }
 
         return redirect()->back()->with('success', 'Settings updated successfully.');
     }
 
-    private function updateImageSetting($key, $file, $folder)
+    private function updateFileSetting($key, $file, $folder)
     {
         $oldSetting = Setting::where('key', $key)->first();
         if ($oldSetting && $oldSetting->value) {
@@ -57,7 +62,11 @@ class SettingController extends Controller
             Storage::disk('public')->delete($oldPath);
         }
 
-        $path = $file->store($folder, 'public');
+        $filename = ($key === 'resume_url') 
+            ? 'Haris-Naseer.' . $file->getClientOriginalExtension() 
+            : $file->hashName();
+
+        $path = $file->storeAs($folder, $filename, 'public');
         Setting::updateOrCreate(['key' => $key], ['value' => Storage::url($path)]);
     }
 }

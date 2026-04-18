@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
     Github, Twitter, Linkedin, Mail, ExternalLink, 
     Palette, Code2, Smartphone, Briefcase, Rocket,
-    ArrowRight, Star, MapPin, Phone, Send, Menu, X, ChevronRight
+    ArrowRight, Star, MapPin, Phone, Send, Menu, X, ChevronRight, Download
 } from 'lucide-react';
 
 const Nav = () => {
@@ -241,6 +241,18 @@ export default function Welcome({ canLogin, canRegister, skills, services, exper
                             <button className="px-8 py-4 bg-primary text-white rounded-full font-bold text-lg hover:bg-primary-hover shadow-xl shadow-primary/30 flex items-center gap-2 group transition-all">
                                 Hire Me <ArrowRight className="group-hover:translate-x-2 transition-transform" />
                             </button>
+
+                            {settings?.resume_url && (
+                                <a 
+                                    href={settings.resume_url} 
+                                    download="Haris Naseer"
+                                    target="_blank"
+                                    className="px-8 py-4 border-2 border-primary text-primary rounded-full font-bold text-lg hover:bg-primary hover:text-white flex items-center gap-2 group transition-all"
+                                >
+                                    Download CV <Download className="group-hover:translate-y-1 transition-transform" size={20} />
+                                </a>
+                            )}
+
                             <div className="flex gap-4">
                                 {settings?.social_github && (
                                     <a href={settings.social_github} target="_blank" className="w-12 h-12 rounded-full border border-border-main flex items-center justify-center text-text-main hover:bg-primary hover:text-white transition-all hover:border-primary">
@@ -587,7 +599,6 @@ export default function Welcome({ canLogin, canRegister, skills, services, exper
                         </div>
                     </div>
 
-                    {/* Footer Grid */}
                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-20 mb-20 border-b border-white/10 pb-20">
                         <div className="col-span-2 lg:col-span-1">
                             <Link href="/" className="mb-8 block">
@@ -616,34 +627,33 @@ export default function Welcome({ canLogin, canRegister, skills, services, exper
                         </div>
 
                         <div>
-                            <h3 className="text-xl font-bold mb-8">Products</h3>
+                            <h3 className="text-xl font-bold mb-8">Navigation</h3>
                             <ul className="space-y-4 text-white/60">
-                                {['Features', 'API', 'Integrations', 'Pricing', 'Documentation'].map(item => (
-                                    <li key={item}><a href="#" className="hover:text-primary transition-colors">{item}</a></li>
+                                {['Home', 'About', 'Services', 'Experience', 'Portfolio', 'Contact'].map(item => (
+                                    <li key={item}><a href={`#${item.toLowerCase()}`} className="hover:text-primary transition-colors">{item}</a></li>
                                 ))}
                             </ul>
                         </div>
 
                         <div>
-                            <h3 className="text-xl font-bold mb-8">Company</h3>
+                            <h3 className="text-xl font-bold mb-8">Services</h3>
                             <ul className="space-y-4 text-white/60">
-                                {['About Us', 'Careers', 'Contact', 'Press', 'Privacy Policy'].map(item => (
-                                    <li key={item}><a href="#" className="hover:text-primary transition-colors">{item}</a></li>
+                                {displayServices.slice(0, 5).map(service => (
+                                    <li key={service.id || service.title}><a href="#services" className="hover:text-primary transition-colors">{service.title}</a></li>
                                 ))}
                             </ul>
                         </div>
 
                         <div>
-                            <h3 className="text-xl font-bold mb-8">Resources</h3>
+                            <h3 className="text-xl font-bold mb-8">Get in Touch</h3>
                             <ul className="space-y-4 text-white/60">
-                                {['Blog', 'Community', 'Help Center', 'Partners', 'Status'].map(item => (
-                                    <li key={item}><a href="#" className="hover:text-primary transition-colors">{item}</a></li>
-                                ))}
+                                {settings?.contact_email && <li className="hover:text-primary transition-colors cursor-default">{settings.contact_email}</li>}
+                                {settings?.contact_phone && <li className="hover:text-primary transition-colors cursor-default">{settings.contact_phone}</li>}
+                                {settings?.contact_location && <li className="hover:text-primary transition-colors cursor-default">{settings.contact_location}</li>}
                             </ul>
                         </div>
                     </div>
 
-                    {/* Bottom Bar */}
                     <div className="flex flex-col md:flex-row justify-between items-center gap-6">
                         <p className="text-white/40 text-sm">
                             {usePage().props.settings?.footer_copyright || `© ${new Date().getFullYear()} Haris Naseer. All rights reserved.`}

@@ -20,6 +20,7 @@ export default function Index({ auth, settings }) {
         social_linkedin: settings.social_linkedin || '',
         logo: null,
         hero_image: null,
+        resume: null,
         _method: 'post', // For file upload with post
     });
 
@@ -165,6 +166,48 @@ export default function Index({ auth, settings }) {
                                             required
                                         ></textarea>
                                         <InputError message={errors.footer_description} className="mt-2" />
+                                    </div>
+                                </div>
+
+                                <hr className="border-gray-50" />
+
+                                {/* Documents Section */}
+                                <div>
+                                    <h4 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
+                                        <ImageIcon className="text-primary" size={20} /> Documents & Downloads
+                                    </h4>
+                                    <div className="bg-gray-50 p-6 rounded-3xl border border-gray-100 flex flex-col md:flex-row gap-8 items-center">
+                                        <div className="flex-1">
+                                            <InputLabel value="Resume / CV (PDF)" className="mb-2 text-black font-bold" />
+                                            <div className="relative inline-block">
+                                                <PrimaryButton type="button" className="!rounded-xl pointer-events-none bg-accent-blue-soft !text-primary border-primary">
+                                                    {data.resume ? data.resume.name : 'Choose Resume File'}
+                                                </PrimaryButton>
+                                                <input 
+                                                    type="file" 
+                                                    className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+                                                    onChange={(e) => setData('resume', e.target.files[0])}
+                                                    accept=".pdf,.doc,.docx"
+                                                />
+                                            </div>
+                                            <p className="mt-3 text-xs text-gray-400">
+                                                Max 5MB. Supported formats: PDF, DOC, DOCX.
+                                            </p>
+                                            <InputError message={errors.resume} className="mt-2" />
+                                        </div>
+                                        
+                                        {settings.resume_url && (
+                                            <div className="md:border-l border-gray-200 md:pl-8 flex flex-col items-center">
+                                                <p className="text-xs font-bold uppercase text-gray-400 mb-2">Current Resume</p>
+                                                <a 
+                                                    href={settings.resume_url} 
+                                                    target="_blank" 
+                                                    className="px-6 py-2 bg-white border border-gray-200 rounded-xl text-sm font-bold text-primary hover:bg-primary hover:text-white transition-all shadow-sm"
+                                                >
+                                                    View / Download
+                                                </a>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
 
