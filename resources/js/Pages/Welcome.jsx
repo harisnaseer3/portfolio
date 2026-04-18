@@ -1,6 +1,7 @@
 import React, { useState, useEffect, forwardRef } from 'react';
 import BrandLogo from '@/Components/BrandLogo';
 import IconResolver from '@/Components/IconResolver';
+import Modal from '@/Components/Modal';
 import { Head, Link, usePage, useForm } from '@inertiajs/react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -9,7 +10,7 @@ import {
     ArrowRight, Star, MapPin, Phone, Send, Menu, X, ChevronRight, Download, CheckCircle
 } from 'lucide-react';
 
-const Nav = () => {
+const Nav = ({ onHireMeClick }) => {
     const [scrolled, setScrolled] = useState(false);
     const [mobileMenu, setMobileMenu] = useState(false);
 
@@ -46,7 +47,10 @@ const Nav = () => {
                             {link.name}
                         </a>
                     ))}
-                    <button className="px-6 py-2.5 bg-primary text-white rounded-full font-semibold hover:bg-primary-hover transition-all shadow-lg shadow-primary/20">
+                    <button 
+                        onClick={onHireMeClick}
+                        className="px-6 py-2.5 bg-primary text-white rounded-full font-semibold hover:bg-primary-hover transition-all shadow-lg shadow-primary/20"
+                    >
                         Hire Me
                     </button>
                 </div>
@@ -77,7 +81,10 @@ const Nav = () => {
                                     {link.name}
                                 </a>
                             ))}
-                            <button className="mt-4 w-full py-3 bg-primary text-white rounded-xl font-bold">
+                            <button 
+                                onClick={() => { setMobileMenu(false); onHireMeClick(); }}
+                                className="mt-4 w-full py-3 bg-primary text-white rounded-xl font-bold"
+                            >
                                 Hire Me
                             </button>
                         </div>
@@ -162,6 +169,7 @@ export default function Welcome({ canLogin, canRegister, skills, services, exper
     const [showAllSkills, setShowAllSkills] = useState(false);
     const [showAllServices, setShowAllServices] = useState(false);
     const [showAllExperiences, setShowAllExperiences] = useState(false);
+    const [isHireMeModalOpen, setIsHireMeModalOpen] = useState(false);
     const categories = ['ALL', 'MOBILE APP', 'WEB APP', 'UI/UX'];
     
     const { data: contactData, setData: setContactData, post: postContact, processing: processingContact, reset: resetContact, errors: contactErrors } = useForm({
@@ -176,7 +184,10 @@ export default function Welcome({ canLogin, canRegister, skills, services, exper
         e.preventDefault();
         postContact(route('contact.store'), {
             preserveScroll: true,
-            onSuccess: () => resetContact(),
+            onSuccess: () => {
+                resetContact();
+                setIsHireMeModalOpen(false);
+            },
         });
     };
     
@@ -214,7 +225,7 @@ export default function Welcome({ canLogin, canRegister, skills, services, exper
     return (
         <div className="min-h-screen bg-[#F8FAFF]">
             <Head title="Haris | Developer Portfolio" />
-            <Nav />
+            <Nav onHireMeClick={() => setIsHireMeModalOpen(true)} />
 
             {/* Hero Section */}
             <section className="container mx-auto px-6 pt-32 pb-20 md:pt-48 md:pb-32 relative overflow-hidden">
@@ -254,7 +265,10 @@ export default function Welcome({ canLogin, canRegister, skills, services, exper
                             transition={{ delay: 0.3 }}
                             className="flex flex-wrap gap-6 items-center"
                         >
-                            <button className="px-8 py-4 bg-primary text-white rounded-full font-bold text-lg hover:bg-primary-hover shadow-xl shadow-primary/30 flex items-center gap-2 group transition-all">
+                            <button 
+                                onClick={() => setIsHireMeModalOpen(true)}
+                                className="px-8 py-4 bg-primary text-white rounded-full font-bold text-lg hover:bg-primary-hover shadow-xl shadow-primary/30 flex items-center gap-2 group transition-all"
+                            >
                                 Hire Me <ArrowRight className="group-hover:translate-x-2 transition-transform" />
                             </button>
 
@@ -748,6 +762,88 @@ export default function Welcome({ canLogin, canRegister, skills, services, exper
                 {/* Background Decoration */}
                 <div className="absolute bottom-0 right-0 w-96 h-96 bg-primary/20 blur-[150px] -mr-48 -mb-48" />
             </footer>
+
+            {/* Hire Me Modal */}
+            <Modal show={isHireMeModalOpen} onClose={() => setIsHireMeModalOpen(false)}>
+                <div className="p-8 md:p-12">
+                    <div className="flex justify-between items-start mb-8">
+                        <div>
+                            <h2 className="text-3xl font-black text-gray-900 mb-2">Let's Work Together</h2>
+                            <p className="text-gray-500 font-bold tracking-tight">Tell me about your project and I'll get back to you soon.</p>
+                        </div>
+                        <button onClick={() => setIsHireMeModalOpen(false)} className="w-10 h-10 bg-gray-50 rounded-xl flex items-center justify-center text-gray-400 hover:bg-red-50 hover:text-red-500 transition-all">
+                            <X size={20} />
+                        </button>
+                    </div>
+
+                    <form onSubmit={handleContactSubmit} className="space-y-5">
+                        <div className="grid md:grid-cols-2 gap-5">
+                            <div>
+                                <label className="block text-xs font-black uppercase text-gray-400 mb-2 tracking-widest">First Name</label>
+                                <input 
+                                    type="text" 
+                                    required
+                                    value={contactData.first_name}
+                                    onChange={e => setContactData('first_name', e.target.value)}
+                                    className="w-full px-5 py-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-primary outline-none transition-all" 
+                                    placeholder="John" 
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-xs font-black uppercase text-gray-400 mb-2 tracking-widest">Last Name</label>
+                                <input 
+                                    type="text" 
+                                    required
+                                    value={contactData.last_name}
+                                    onChange={e => setContactData('last_name', e.target.value)}
+                                    className="w-full px-5 py-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-primary outline-none transition-all" 
+                                    placeholder="Doe" 
+                                />
+                            </div>
+                        </div>
+                        <div>
+                            <label className="block text-xs font-black uppercase text-gray-400 mb-2 tracking-widest">Email Address</label>
+                            <input 
+                                type="email" 
+                                required
+                                value={contactData.email}
+                                onChange={e => setContactData('email', e.target.value)}
+                                className="w-full px-5 py-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-primary outline-none transition-all" 
+                                placeholder="john@example.com" 
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-xs font-black uppercase text-gray-400 mb-2 tracking-widest">Subject</label>
+                            <input 
+                                type="text" 
+                                required
+                                value={contactData.subject}
+                                onChange={e => setContactData('subject', e.target.value)}
+                                className="w-full px-5 py-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-primary outline-none transition-all" 
+                                placeholder="Project Inquiry" 
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-xs font-black uppercase text-gray-400 mb-2 tracking-widest">Message</label>
+                            <textarea 
+                                rows="4" 
+                                required
+                                value={contactData.message}
+                                onChange={e => setContactData('message', e.target.value)}
+                                className="w-full px-5 py-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-primary outline-none transition-all resize-none" 
+                                placeholder="Tell me about your project..."
+                            ></textarea>
+                        </div>
+                        <button 
+                            type="submit"
+                            disabled={processingContact}
+                            className="w-full py-4 bg-primary text-white rounded-xl font-bold text-lg hover:bg-primary-hover shadow-xl shadow-primary/20 flex items-center justify-center gap-3 group transition-all disabled:opacity-50"
+                        >
+                            {processingContact ? 'Sending...' : 'Send Inquiry'} <Send size={20} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                        </button>
+                    </form>
+                </div>
+            </Modal>
         </div>
     );
 }
