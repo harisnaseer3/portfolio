@@ -5,16 +5,38 @@
 @tailwind utilities;
 
 @layer base {
+    :root {
+        --bg-main: #F8FAFF;
+        --bg-card: #FFFFFF;
+        --text-main: #0F172A;
+        --text-muted: #64748B;
+        --border-main: #E2E8F0;
+        --accent-soft: #F5F7FF;
+        --glass-bg: rgba(255, 255, 255, 0.7);
+        --glass-border: rgba(255, 255, 255, 0.4);
+    }
+
+    .dark {
+        --bg-main: #020617;
+        --bg-card: #0F172A;
+        --text-main: #F8FAFF;
+        --text-muted: #94A3B8;
+        --border-main: #1E293B;
+        --accent-soft: #111827;
+        --glass-bg: rgba(15, 23, 42, 0.7);
+        --glass-border: rgba(30, 41, 59, 0.4);
+    }
+
     body {
-        @apply bg-[#F8FAFF] text-[#0F172A] font-sans antialiased;
+        @apply bg-[var(--bg-main)] text-[var(--text-main)] font-sans antialiased transition-colors duration-300;
     }
 }
 
 @layer components {
     .glass {
-        background: rgba(255, 255, 255, 0.7);
+        background: var(--glass-bg);
         backdrop-filter: blur(16px);
-        border: 1px solid rgba(255, 255, 255, 0.4);
+        border: 1px solid var(--glass-border);
     }
 
     .card-hover {
@@ -39,7 +61,7 @@
         background: 
             radial-gradient(circle at top right, rgba(99, 102, 241, 0.05) 0%, transparent 40%),
             radial-gradient(circle at bottom left, rgba(168, 85, 247, 0.05) 0%, transparent 40%),
-            #F8FAFF;
+            var(--bg-main);
     }
 
     .hero-gradient {
@@ -68,7 +90,7 @@
     width: 10px;
 }
 ::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background: var(--bg-main);
 }
 ::-webkit-scrollbar-thumb {
     background: #6366F1;

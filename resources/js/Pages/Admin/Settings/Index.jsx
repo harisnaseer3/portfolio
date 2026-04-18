@@ -5,7 +5,7 @@ import SecondaryButton from '@/Components/SecondaryButton';
 import TextInput from '@/Components/TextInput';
 import InputLabel from '@/Components/InputLabel';
 import InputError from '@/Components/InputError';
-import { Settings, Image as ImageIcon, Save, CheckCircle, Mail } from 'lucide-react';
+import { Settings, Image as ImageIcon, Save, CheckCircle, Mail, Sun, Moon } from 'lucide-react';
 
 export default function Index({ auth, settings }) {
     const { data, setData, post, processing, errors, recentlySuccessful } = useForm({
@@ -18,6 +18,7 @@ export default function Index({ auth, settings }) {
         social_github: settings.social_github || '',
         social_twitter: settings.social_twitter || '',
         social_linkedin: settings.social_linkedin || '',
+        site_theme: settings.site_theme || 'light',
         logo: null,
         hero_image: null,
         resume: null,
@@ -169,7 +170,47 @@ export default function Index({ auth, settings }) {
                                     </div>
                                 </div>
 
-                                <hr className="border-gray-50" />
+                                <hr className="border-gray-50 dark:border-slate-800" />
+
+                                {/* Site Appearance */}
+                                <div>
+                                    <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+                                        <Sun className="text-primary" size={20} /> Site Appearance
+                                    </h4>
+                                    <div className="bg-gray-50 dark:bg-slate-900/50 p-8 rounded-3xl border border-gray-100 dark:border-slate-800">
+                                        <div className="grid md:grid-cols-2 gap-10">
+                                            <div 
+                                                onClick={() => setData('site_theme', 'light')}
+                                                className={`cursor-pointer p-6 rounded-2xl border-2 transition-all ${data.site_theme === 'light' ? 'border-primary bg-primary/5' : 'border-transparent bg-white dark:bg-slate-800 hover:border-gray-200'}`}
+                                            >
+                                                <div className="flex justify-between items-center mb-4">
+                                                    <span className="font-bold text-gray-900 dark:text-white">Light Mode</span>
+                                                    <Sun className={data.site_theme === 'light' ? 'text-primary' : 'text-gray-300'} />
+                                                </div>
+                                                <div className="space-y-2 opacity-60">
+                                                    <div className="h-2 w-full bg-gray-200 rounded-full" />
+                                                    <div className="h-2 w-2/3 bg-gray-200 rounded-full" />
+                                                </div>
+                                            </div>
+
+                                            <div 
+                                                onClick={() => setData('site_theme', 'dark')}
+                                                className={`cursor-pointer p-6 rounded-2xl border-2 transition-all ${data.site_theme === 'dark' ? 'border-primary bg-primary/5' : 'border-transparent bg-white dark:bg-slate-800 hover:border-gray-200'}`}
+                                            >
+                                                <div className="flex justify-between items-center mb-4">
+                                                    <span className="font-bold text-gray-900 dark:text-white">Dark Mode</span>
+                                                    <Moon className={data.site_theme === 'dark' ? 'text-primary' : 'text-gray-300'} />
+                                                </div>
+                                                <div className="space-y-2 opacity-60">
+                                                    <div className="h-2 w-full bg-slate-600 rounded-full" />
+                                                    <div className="h-2 w-2/3 bg-slate-600 rounded-full" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr className="border-gray-50 dark:border-slate-800" />
 
                                 {/* Documents Section */}
                                 <div>

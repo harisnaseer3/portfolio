@@ -42,6 +42,7 @@ class HandleInertiaRequests extends Middleware
                 'location' => $request->url(),
             ],
             'settings' => Setting::all()->pluck('value', 'key'),
+            'site_theme' => Setting::where('key', 'site_theme')->value('value') ?? 'light',
             'flash' => [
                 'success' => $request->session()->get('success'),
             ],

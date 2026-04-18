@@ -29,6 +29,7 @@ class SettingController extends Controller
             'social_github' => 'nullable|url|max:255',
             'social_twitter' => 'nullable|url|max:255',
             'social_linkedin' => 'nullable|url|max:255',
+            'site_theme' => 'required|string|in:light,dark',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'hero_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:4096',
             'resume' => 'nullable|file|mimes:pdf,doc,docx|max:5120',

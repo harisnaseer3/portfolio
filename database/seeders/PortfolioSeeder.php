@@ -19,7 +19,7 @@ class PortfolioSeeder extends Seeder
         Skill::updateOrCreate(['name' => 'Git & Version Control'], ['percentage' => 90, 'icon' => 'Git & Version Control']);
 
         // Services
-        Service::updateOrCreate(['title' => 'WEB DEV'], ['description' => 'Designing and building modern, scalable, and reliable web applications that deliver real results.', 'icon' => 'Code2', 'order_index' => 1]);
+        Service::updateOrCreate(['title' => 'WEB DEVELOPMENT'], ['description' => 'Designing and building modern, scalable, and reliable web applications that deliver real results.', 'icon' => 'Code2', 'order_index' => 1]);
         Service::updateOrCreate(['title' => 'DATABASE DESIGN'], ['description' => 'Designing efficient, scalable, and well-structured databases to ensure optimal performance and data integrity.', 'icon' => 'Database', 'order_index' => 2]);
         Service::updateOrCreate(['title' => 'SYSTEM ARCHITECTURE'], ['description' => 'Designing robust, scalable, and efficient system architectures to ensure reliability, performance, and long-term maintainability.', 'icon' => 'Architecture', 'order_index' => 3]);
         Service::updateOrCreate(['title' => 'UI DESIGN'], ['description' => 'Creating clean, intuitive, and user-focused interfaces that deliver a seamless user experience.', 'icon' => 'Briefcase', 'order_index' => 4]);
