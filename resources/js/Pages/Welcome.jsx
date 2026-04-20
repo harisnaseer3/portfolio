@@ -214,7 +214,7 @@ export default function Welcome({
             />
 
             {/* Hero Section */}
-            <section className="container mx-auto px-6 pt-32 pb-20 md:pt-48 md:pb-32 relative overflow-hidden">
+            <section className="container mx-auto px-6 pt-24 pb-12 md:pt-32 md:pb-20 relative overflow-hidden">
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full hero-gradient pointer-events-none -z-10" />
                 <div className="flex flex-col md:flex-row items-center gap-12 lg:gap-20">
                     <div className="md:w-1/2">
@@ -336,7 +336,7 @@ export default function Welcome({
             {/* Specialization Section */}
             <section id="services" className="section-padding bg-white dark:bg-slate-950/50">
                 <div className="container mx-auto px-6">
-                    <div className="text-center mb-16">
+                    <div className="text-center mb-10">
                         <span className="text-primary font-bold uppercase tracking-widest text-sm mb-2 block">What I Do</span>
                         <h2 className="text-4xl md:text-5xl font-black text-text-main dark:text-white">I'm Specialized In</h2>
                     </div>
@@ -356,7 +356,7 @@ export default function Welcome({
                     </div>
 
                     {displayServices.length > 4 && !showAllServices && (
-                        <div className="mt-16 text-center">
+                        <div className="mt-10 text-center">
                             <button 
                                 onClick={() => setShowAllServices(true)}
                                 className="px-10 py-4 border-2 border-primary text-primary dark:text-primary-light rounded-full font-bold hover:bg-primary hover:text-white transition-all group lg:text-lg"
@@ -434,7 +434,7 @@ export default function Welcome({
             {/* Experience Section */}
             <section id="experience" className="section-padding bg-accent-blue-soft/30 dark:bg-slate-950/30">
                 <div className="container mx-auto px-6">
-                    <div className="text-center mb-16">
+                    <div className="text-center mb-10">
                         <span className="text-primary font-bold uppercase tracking-widest text-sm mb-2 block">My Journey</span>
                         <h2 className="text-4xl md:text-5xl font-black text-gray-900 dark:text-white">Work Experience</h2>
                     </div>
@@ -462,7 +462,7 @@ export default function Welcome({
                         </div>
 
                         {displayExperiences.length > 4 && !showAllExperiences && (
-                            <div className="mt-16 text-center">
+                            <div className="mt-10 text-center">
                                 <button 
                                     onClick={() => setShowAllExperiences(true)}
                                     className="px-10 py-4 border-2 border-primary text-primary dark:text-primary-light rounded-full font-bold hover:bg-primary hover:text-white transition-all group lg:text-lg"
@@ -479,7 +479,7 @@ export default function Welcome({
             {displayTestimonials?.length > 0 && (
                 <section id="testimonials" className="section-padding bg-gray-50 dark:bg-slate-900/50">
                     <div className="container mx-auto px-6">
-                        <div className="text-center mb-16">
+                        <div className="text-center mb-10">
                             <span className="text-primary font-bold uppercase tracking-widest text-sm mb-2 block">Social Proof</span>
                             <h2 className="text-4xl md:text-5xl font-black text-text-main dark:text-white">Client Stories</h2>
                         </div>
@@ -512,7 +512,7 @@ export default function Welcome({
                         </div>
 
                         {displayTestimonials.length > 4 && !showAllTestimonials && (
-                            <div className="mt-16 text-center">
+                            <div className="mt-10 text-center">
                                 <button 
                                     onClick={() => setShowAllTestimonials(true)}
                                     className="px-10 py-4 border-2 border-primary text-primary dark:text-primary-light rounded-full font-bold hover:bg-primary hover:text-white transition-all group lg:text-lg"
@@ -528,7 +528,7 @@ export default function Welcome({
             {/* Projects Section */}
             <section id="projects" className="section-padding">
                 <div className="container mx-auto px-6">
-                    <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
+                    <div className="flex flex-col md:flex-row justify-between items-end mb-10 gap-8">
                         <div>
                             <span className="text-primary font-bold uppercase tracking-widest text-sm mb-2 block">My Works</span>
                             <h2 className="text-4xl md:text-5xl font-black text-text-main dark:text-white leading-tight">Recent Featured <br />Projects</h2>
@@ -556,7 +556,7 @@ export default function Welcome({
                     </div>
 
                     {filteredProjects.length > 4 && !showAllProjects && (
-                        <div className="mt-16 text-center">
+                        <div className="mt-10 text-center">
                             <button 
                                 onClick={() => setShowAllProjects(true)}
                                 className="px-10 py-4 border-2 border-primary text-primary dark:text-primary-light rounded-full font-bold hover:bg-primary hover:text-white transition-all group lg:text-lg"
@@ -572,7 +572,7 @@ export default function Welcome({
             {displayPosts?.length > 0 && (
                 <section id="blog" className="section-padding">
                     <div className="container mx-auto px-6">
-                        <div className="flex items-center justify-between mb-16">
+                        <div className="flex items-center justify-between mb-10">
                             <div>
                                 <span className="text-primary font-bold uppercase tracking-widest text-sm mb-2 block">Insights</span>
                                 <h2 className="text-4xl md:text-5xl font-black text-text-main dark:text-white italic">Latest Articles</h2>
@@ -604,7 +604,7 @@ export default function Welcome({
                         </div>
 
                         {displayPosts.length > 4 && !showAllPosts && (
-                            <div className="mt-16 text-center">
+                            <div className="mt-10 text-center">
                                 <button 
                                     onClick={() => setShowAllPosts(true)}
                                     className="px-10 py-4 border-2 border-primary text-primary dark:text-primary-light rounded-full font-bold hover:bg-primary hover:text-white transition-all group lg:text-lg"
