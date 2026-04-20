@@ -1,5 +1,5 @@
 import { 
-    Github, Twitter, Linkedin, Mail, ExternalLink, 
+    Mail, ExternalLink, 
     Palette, Code2, Smartphone, Briefcase, Rocket,
     ArrowRight, Star, MapPin, Phone, Send, Menu, X, ChevronRight, Download, CheckCircle,
     Sun, Moon, Code, Database
@@ -8,6 +8,30 @@ import { useState, useEffect, useMemo, useRef, memo } from 'react';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Modal from '@/Components/Modal';
+import CustomCursor from '@/Components/CustomCursor';
+import Magnetic from '@/Components/Magnetic';
+import ScrollProgress from '@/Components/ScrollProgress';
+import axios from 'axios';
+
+const Github = ({ size = 24, className = "" }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+    </svg>
+);
+
+const Twitter = ({ size = 24, className = "" }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+        <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z" />
+    </svg>
+);
+
+const Linkedin = ({ size = 24, className = "" }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+        <rect width="4" height="12" x="2" y="9" />
+        <circle cx="4" cy="4" r="2" />
+    </svg>
+);
 
 const IconResolver = ({ iconName, size = 24, className = "" }) => {
     const icons = { Palette, Code2, Smartphone, Briefcase, Rocket, Star, MapPin, Phone, Send, Mail, Code, Database };
@@ -69,12 +93,14 @@ const Nav = ({ onHireMeClick, theme, toggleTheme, settings }) => {
                         </a>
                     ))}
                     
-                    <button 
-                        onClick={onHireMeClick}
-                        className="px-6 py-2.5 bg-primary text-white rounded-full font-semibold hover:bg-primary-hover transition-all shadow-lg shadow-primary/20"
-                    >
-                        Hire Me
-                    </button>
+                    <Magnetic>
+                        <button 
+                            onClick={onHireMeClick}
+                            className="px-6 py-2.5 bg-primary text-white rounded-full font-semibold hover:bg-primary-hover transition-all shadow-lg shadow-primary/20"
+                        >
+                            Hire Me
+                        </button>
+                    </Magnetic>
 
                     <button 
                         onClick={toggleTheme}
@@ -170,34 +196,63 @@ const ServiceCard = ({ title, desc, icon: Icon, index }) => (
     </motion.div>
 );
 
-const ProjectCard = memo(({ project }) => (
+const ProjectCard = memo(({ project, onTrack }) => (
     <motion.div 
         initial={{ opacity: 0, scale: 0.9 }}
         whileInView={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.3 }}
-        className="relative group rounded-3xl overflow-hidden shadow-lg aspect-auto bg-slate-200"
+        whileHover={{ y: -10 }}
+        className="relative group rounded-[2.5rem] overflow-hidden shadow-lg aspect-auto bg-white dark:bg-slate-900 border border-transparent hover:border-primary/20 transition-all h-full"
     >
-        {project.image_url && !project.image_url.includes('placeholder.webp') && !project.image_url.includes('project1.webp') ? (
-            <img src={project.image_url} alt={project.title} className="w-full h-72 object-cover group-hover:scale-110 transition-transform duration-500" />
-        ) : (
-            <div className="w-full h-72 bg-gradient-to-br from-primary/10 to-primary/30 flex items-center justify-center">
-                <IconResolver iconName="Palette" size={48} className="text-primary/20" />
-            </div>
-        )}
+        <div className="relative h-64 overflow-hidden">
+            {project.image_url && !project.image_url.includes('placeholder.webp') && !project.image_url.includes('project1.webp') ? (
+                <img src={project.image_url} alt={project.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+            ) : (
+                <div className="w-full h-full bg-gradient-to-br from-primary/10 to-primary/30 flex items-center justify-center">
+                    <IconResolver iconName="Palette" size={48} className="text-primary/20" />
+                </div>
+            )}
+            <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+        </div>
         
-        <div className="absolute inset-0 bg-primary/90 opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col items-center justify-center text-white p-8">
-            <span className="text-sm font-bold uppercase tracking-widest mb-2 text-white/80">{project.category}</span>
-            <h3 className="text-2xl font-bold text-center mb-6">{project.title}</h3>
-            <div className="flex gap-4">
-                <a href={project.link} className="w-12 h-12 bg-white text-primary rounded-full flex items-center justify-center hover:scale-110 transition-all">
-                    <ExternalLink size={20} />
-                </a>
+        <div className="p-8">
+            <div className="flex justify-between items-start mb-4">
+                <span className="text-[10px] font-black uppercase tracking-widest text-primary bg-primary/5 px-3 py-1 rounded-full">{project.category}</span>
+                <div className="flex gap-2">
+                    {project.link && (
+                        <a href={project.link} target="_blank" className="p-2 bg-gray-50 dark:bg-slate-800 text-gray-400 hover:text-primary rounded-xl transition-all border border-gray-100 dark:border-slate-700">
+                            <ExternalLink size={16} />
+                        </a>
+                    )}
+                </div>
             </div>
+            <h3 className="text-2xl font-black text-gray-900 dark:text-white mb-3 leading-tight line-clamp-1">{project.title}</h3>
+            
+            <div className="flex flex-wrap gap-2 mb-6">
+                {project.tech_stack?.slice(0, 3).map(tech => (
+                    <span key={tech} className="text-[9px] font-bold uppercase text-gray-400 border border-gray-100 dark:border-slate-800 px-2 py-1 rounded-lg">
+                        {tech}
+                    </span>
+                ))}
+                {project.tech_stack?.length > 3 && <span className="text-[9px] font-bold text-gray-300">+{project.tech_stack.length - 3}</span>}
+            </div>
+
+            <Link 
+                href={route('projects.show', project.id)}
+                className="w-full py-3 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-white rounded-2xl font-black text-sm flex items-center justify-center gap-2 group-hover:bg-primary group-hover:text-white transition-all shadow-sm"
+            >
+                View Case Study <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+            </Link>
         </div>
     </motion.div>
 ));
 
-export default function Welcome({ canLogin, canRegister, skills, services, experiences, projects }) {
+export default function Welcome({ 
+    auth, canLogin, canRegister, 
+    skills, services, experiences, projects,
+    testimonials: displayTestimonials,
+    posts: displayPosts
+}) {
     const { settings } = usePage().props;
     const [activeTab, setActiveTab] = useState('ALL');
     const [showAllProjects, setShowAllProjects] = useState(false);
@@ -218,6 +273,11 @@ export default function Welcome({ canLogin, canRegister, skills, services, exper
     }, [theme]);
 
     const toggleTheme = () => setTheme(theme === 'light' ? 'dark' : 'light');
+
+    const trackEvent = (eventName) => {
+        axios.post(route('analytics.track'), { event_name: eventName })
+            .catch(err => console.error('Analytics failed', err));
+    };
 
     const categories = ['ALL', 'MOBILE APP', 'WEB APP', 'UI/UX'];
     
@@ -274,8 +334,14 @@ export default function Welcome({ canLogin, canRegister, skills, services, exper
     return (
         <div className="min-h-screen bg-[var(--bg-main)] dark:bg-slate-950 transition-colors duration-500">
             <Head title="Haris | Developer Portfolio" />
+            <ScrollProgress />
+            <CustomCursor />
+
             <Nav 
-                onHireMeClick={() => setIsHireMeModalOpen(true)} 
+                onHireMeClick={() => {
+                    setIsHireMeModalOpen(true);
+                    trackEvent('hire_me_click');
+                }} 
                 theme={theme}
                 toggleTheme={toggleTheme}
                 settings={settings}
@@ -299,7 +365,7 @@ export default function Welcome({ canLogin, canRegister, skills, services, exper
                             transition={{ delay: 0.1 }}
                             className="text-5xl lg:text-7xl font-extrabold leading-tight text-text-main dark:text-white mb-8"
                         >
-                            Welcome to my <br /> 
+                            Welcome to Haris's <br /> 
                             <span className="gradient-text">Portfolio</span>
                         </motion.h1>
                         <motion.p 
@@ -318,24 +384,32 @@ export default function Welcome({ canLogin, canRegister, skills, services, exper
                             transition={{ delay: 0.3 }}
                             className="flex flex-wrap gap-6 items-center"
                         >
-                            <button 
-                                onClick={() => setIsHireMeModalOpen(true)}
-                                className="px-8 py-4 bg-primary text-white rounded-full font-bold text-lg hover:bg-primary-hover shadow-xl shadow-primary/30 flex items-center gap-2 group transition-all"
-                            >
-                                Hire Me <ArrowRight className="group-hover:translate-x-2 transition-transform" />
-                            </button>
+                            <Magnetic>
+                                <button 
+                                    onClick={() => {
+                                        setIsHireMeModalOpen(true);
+                                        trackEvent('hire_me_click');
+                                    }}
+                                    className="px-8 py-4 bg-primary text-white rounded-full font-bold text-lg hover:bg-primary-hover shadow-xl shadow-primary/30 flex items-center gap-2 group transition-all"
+                                >
+                                    Hire Me <ArrowRight className="group-hover:translate-x-2 transition-transform" />
+                                </button>
+                            </Magnetic>
 
                             {settings?.resume_url && (
-                                <a 
-                                    href={settings.resume_url} 
-                                    download="Haris Naseer"
-                                    className="flex items-center gap-3 font-bold text-gray-900 dark:text-white hover:text-primary dark:hover:text-primary-light transition-colors group"
-                                >
-                                    <div className="w-12 h-12 rounded-full border-2 border-gray-100 dark:border-slate-800 flex items-center justify-center group-hover:border-primary transition-all">
-                                        <Download size={20} />
-                                    </div>
-                                    Download CV
-                                </a>
+                                <Magnetic>
+                                    <a 
+                                        href={settings.resume_url} 
+                                        onClick={() => trackEvent('cv_download')}
+                                        download="Haris Naseer"
+                                        className="flex items-center gap-3 font-bold text-gray-900 dark:text-white hover:text-primary dark:hover:text-primary-light transition-colors group"
+                                    >
+                                        <div className="w-12 h-12 rounded-full border-2 border-gray-100 dark:border-slate-800 flex items-center justify-center group-hover:border-primary transition-all">
+                                            <Download size={20} />
+                                        </div>
+                                        Download CV
+                                    </a>
+                                </Magnetic>
                             )}
                         </motion.div>
                     </div>
@@ -501,6 +575,43 @@ export default function Welcome({ canLogin, canRegister, skills, services, exper
                 </div>
             </section>
 
+            {/* Testimonials Bento Section */}
+            {displayTestimonials?.length > 0 && (
+                <section id="testimonials" className="section-padding bg-gray-50 dark:bg-slate-900/50">
+                    <div className="container mx-auto px-6">
+                        <div className="text-center mb-16">
+                            <span className="text-primary font-bold uppercase tracking-widest text-sm mb-2 block">Social Proof</span>
+                            <h2 className="text-4xl md:text-5xl font-black text-text-main dark:text-white">Client Stories</h2>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+                            {displayTestimonials.map((t, idx) => (
+                                <motion.div 
+                                    key={t.id}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: idx * 0.1 }}
+                                    className={`bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 shadow-premium border border-gray-100 dark:border-slate-800 ${idx === 0 ? 'md:col-span-8' : idx === 1 ? 'md:col-span-4' : 'md:col-span-6'}`}
+                                >
+                                    <div className="flex items-center gap-4 mb-6">
+                                        <div className="w-14 h-14 rounded-2xl overflow-hidden border-2 border-primary/20">
+                                            <img src={t.image_url || "/api/placeholder/100/100"} alt={t.name} className="w-full h-full object-cover" />
+                                        </div>
+                                        <div>
+                                            <h4 className="font-black text-gray-900 dark:text-white leading-none mb-1">{t.name}</h4>
+                                            <p className="text-[10px] font-black text-primary dark:text-primary-light uppercase tracking-widest">{t.role} @ {t.company}</p>
+                                        </div>
+                                    </div>
+                                    <p className="text-lg text-gray-500 dark:text-slate-400 font-medium italic leading-relaxed">
+                                        "{t.content}"
+                                    </p>
+                                </motion.div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            )}
+
             {/* Projects Section */}
             <section id="projects" className="section-padding">
                 <div className="container mx-auto px-6">
@@ -543,6 +654,42 @@ export default function Welcome({ canLogin, canRegister, skills, services, exper
                     )}
                 </div>
             </section>
+
+            {/* Blog Section Highlights */}
+            {displayPosts?.length > 0 && (
+                <section id="blog" className="section-padding">
+                    <div className="container mx-auto px-6">
+                        <div className="flex items-center justify-between mb-16">
+                            <div>
+                                <span className="text-primary font-bold uppercase tracking-widest text-sm mb-2 block">Insights</span>
+                                <h2 className="text-4xl md:text-5xl font-black text-text-main dark:text-white italic">Latest Articles</h2>
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            {displayPosts.map((post) => (
+                                <motion.div 
+                                    key={post.id}
+                                    whileHover={{ y: -10 }}
+                                    className="bg-white dark:bg-slate-900 rounded-[2.5rem] overflow-hidden shadow-premium border border-gray-100 dark:border-slate-800 group"
+                                >
+                                    <div className="h-48 overflow-hidden">
+                                        <img src={post.featured_image || "/api/placeholder/400/250"} alt={post.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                                    </div>
+                                    <div className="p-8">
+                                        <span className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 block italic">{new Date(post.created_at).toLocaleDateString()}</span>
+                                        <h3 className="text-xl font-black text-gray-900 dark:text-white mb-4 line-clamp-2">{post.title}</h3>
+                                        <p className="text-gray-500 dark:text-slate-400 text-sm mb-6 line-clamp-2">{post.excerpt || post.content.substring(0, 100)}</p>
+                                        <div className="flex items-center gap-2 text-primary dark:text-primary-light font-black text-sm group-hover:gap-4 transition-all">
+                                            Read Article <ArrowRight size={16} />
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            )}
 
             {/* Contact Section */}
             <section id="contact" className="section-padding bg-accent-blue-soft/30 dark:bg-slate-950/30">

@@ -19,7 +19,26 @@ export default function Index({ auth, projects }) {
         link: '',
         image: null,
         order_index: '',
+        tech_stack: [],
+        case_study: '',
+        gallery: [],
     });
+
+    const [techInput, setTechInput] = useState('');
+
+    const addTech = (e) => {
+        if (e.key === 'Enter' && techInput.trim()) {
+            e.preventDefault();
+            if (!data.tech_stack.includes(techInput.trim())) {
+                setData('tech_stack', [...data.tech_stack, techInput.trim()]);
+            }
+            setTechInput('');
+        }
+    };
+
+    const removeTech = (tech) => {
+        setData('tech_stack', data.tech_stack.filter(t => t !== tech));
+    };
 
     const openModal = (project = null) => {
         clearErrors();
@@ -29,8 +48,11 @@ export default function Index({ auth, projects }) {
                 title: project.title,
                 category: project.category,
                 link: project.link || '',
-                image: null, // We handle new image separately
+                image: null,
                 order_index: project.order_index || '',
+                tech_stack: project.tech_stack || [],
+                case_study: project.case_study || '',
+                gallery: [],
             });
         } else {
             setEditingProject(null);
@@ -47,15 +69,11 @@ export default function Index({ auth, projects }) {
     const submit = (e) => {
         e.preventDefault();
         
-        // Use post with _method spoofing for file uploads on update
         if (editingProject) {
-            transform((data) => ({
-                ...data,
-                _method: 'put',
-            }));
             post(route('admin.projects.update', editingProject.id), {
                 forceFormData: true,
                 onSuccess: () => closeModal(),
+                data: { ...data, _method: 'put' }
             });
         } else {
             post(route('admin.projects.store'), {
@@ -67,11 +85,7 @@ export default function Index({ auth, projects }) {
 
     const deleteProject = (id) => {
         if (confirm('Are you sure you want to delete this project?')) {
-            destroy(route('admin.projects.destroy', id), {
-                onSuccess: () => {
-                    // Optional: add success notification
-                }
-            });
+            destroy(route('admin.projects.destroy', id));
         }
     };
 
@@ -135,7 +149,15 @@ export default function Index({ auth, projects }) {
                                                 </a>
                                             )}
                                         </div>
-                                        <h4 className="text-lg font-bold text-gray-900 line-clamp-1">{project.title}</h4>
+                                        <h4 className="text-lg font-bold text-gray-900 line-clamp-1 mb-3">{project.title}</h4>
+                                        <div className="flex flex-wrap gap-1.5">
+                                            {project.tech_stack?.slice(0, 3).map(tech => (
+                                                <span key={tech} className="text-[9px] font-black uppercase tracking-wider bg-gray-200 text-gray-500 px-2 py-0.5 rounded">
+                                                    {tech}
+                                                </span>
+                                            ))}
+                                            {project.tech_stack?.length > 3 && <span className="text-[9px] font-black text-gray-400">+{project.tech_stack.length - 3} more</span>}
+                                        </div>
                                     </div>
                                 </div>
                             ))}
@@ -149,32 +171,32 @@ export default function Index({ auth, projects }) {
                 </div>
             </div>
 
-            <Modal show={isModalOpen} onClose={closeModal} maxWidth="xl">
-                <form onSubmit={submit} className="p-8">
-                    <h2 className="text-2xl font-bold mb-6">
-                        {editingProject ? 'Edit Project' : 'Add New Project'}
+            <Modal show={isModalOpen} onClose={closeModal} maxWidth="4xl">
+                <form onSubmit={submit} className="p-10 space-y-8 max-h-[90vh] overflow-y-auto">
+                    <h2 className="text-2xl font-black text-gray-900 italic">
+                        {editingProject ? 'Edit Masterpiece' : 'Add New Project'}
                     </h2>
 
-                    <div className="space-y-6">
-                        <div className="grid grid-cols-2 gap-6">
-                            <div className="col-span-2 md:col-span-1">
-                                <InputLabel htmlFor="title" value="Project Title" />
+                    <div className="grid grid-cols-2 gap-8">
+                        <div className="space-y-6">
+                            <div className="space-y-2">
+                                <InputLabel htmlFor="title" value="Project Title" className="uppercase text-[10px] font-black tracking-widest text-gray-400" />
                                 <TextInput
                                     id="title"
                                     type="text"
-                                    className="mt-1 block w-full !rounded-xl"
+                                    className="w-full !rounded-2xl !border-gray-100 bg-gray-50"
                                     value={data.title}
                                     onChange={(e) => setData('title', e.target.value)}
                                     required
                                 />
-                                <InputError message={errors.title} className="mt-2" />
+                                <InputError message={errors.title} />
                             </div>
 
-                            <div className="col-span-2 md:col-span-1">
-                                <InputLabel htmlFor="category" value="Category" />
+                            <div className="space-y-2">
+                                <InputLabel htmlFor="category" value="Category" className="uppercase text-[10px] font-black tracking-widest text-gray-400" />
                                 <select
                                     id="category"
-                                    className="mt-1 block w-full border-gray-300 focus:border-primary focus:ring-primary rounded-xl shadow-sm font-medium"
+                                    className="w-full border-gray-100 focus:border-primary focus:ring-primary rounded-2xl bg-gray-50 font-bold text-sm h-[50px] px-4"
                                     value={data.category}
                                     onChange={(e) => setData('category', e.target.value)}
                                     required
@@ -182,67 +204,111 @@ export default function Index({ auth, projects }) {
                                     <option value="">Select Category</option>
                                     {categories.map(c => <option key={c} value={c}>{c}</option>)}
                                 </select>
-                                <InputError message={errors.category} className="mt-2" />
+                                <InputError message={errors.category} />
+                            </div>
+
+                            <div className="space-y-2">
+                                <InputLabel htmlFor="link" value="External Link" className="uppercase text-[10px] font-black tracking-widest text-gray-400" />
+                                <TextInput
+                                    id="link"
+                                    type="text"
+                                    className="w-full !rounded-2xl !border-gray-100 bg-gray-50"
+                                    value={data.link}
+                                    onChange={(e) => setData('link', e.target.value)}
+                                    placeholder="https://..."
+                                />
+                                <InputError message={errors.link} />
+                            </div>
+
+                            <div className="space-y-2">
+                                <InputLabel value="Tech Stack (Press Enter to add)" className="uppercase text-[10px] font-black tracking-widest text-gray-400" />
+                                <div className="flex flex-wrap gap-2 p-3 bg-gray-50 border border-gray-100 rounded-2xl min-h-[50px]">
+                                    {data.tech_stack.map(tech => (
+                                        <span key={tech} className="bg-primary text-white text-[10px] font-black px-3 py-1 rounded-full flex items-center gap-2">
+                                            {tech}
+                                            <button type="button" onClick={() => removeTech(tech)}><X size={12} /></button>
+                                        </span>
+                                    ))}
+                                    <input 
+                                        type="text" 
+                                        value={techInput}
+                                        onChange={(e) => setTechInput(e.target.value)}
+                                        onKeyDown={addTech}
+                                        className="bg-transparent border-none focus:ring-0 text-sm flex-1 min-w-[80px]"
+                                        placeholder="e.g. Next.js"
+                                    />
+                                </div>
                             </div>
                         </div>
 
-                        <div>
-                            <InputLabel htmlFor="link" value="Project Link (Optional)" />
-                            <TextInput
-                                id="link"
-                                type="text"
-                                className="mt-1 block w-full !rounded-xl"
-                                value={data.link}
-                                onChange={(e) => setData('link', e.target.value)}
-                                placeholder="https://..."
-                            />
-                            <InputError message={errors.link} className="mt-2" />
-                        </div>
+                        <div className="space-y-6">
+                            <div className="space-y-2">
+                                <InputLabel value="Main Cover Image" className="uppercase text-[10px] font-black tracking-widest text-gray-400" />
+                                <div className="relative h-44 bg-gray-50 border-2 border-dashed border-gray-200 rounded-2xl overflow-hidden group hover:border-primary/50 transition-all cursor-pointer">
+                                    {data.image ? (
+                                        <img src={URL.createObjectURL(data.image)} className="w-full h-full object-cover" alt="Preview" />
+                                    ) : editingProject?.image_url ? (
+                                        <img src={editingProject.image_url} className="w-full h-full object-cover opacity-50" alt="Current" />
+                                    ) : (
+                                        <div className="h-full flex flex-col items-center justify-center text-gray-400">
+                                            <ImageIcon size={24} className="mb-1" />
+                                            <span className="text-[10px] font-black uppercase tracking-widest">Main Cover</span>
+                                        </div>
+                                    )}
+                                    <input type="file" className="absolute inset-0 opacity-0 cursor-pointer" onChange={(e) => setData('image', e.target.files[0])} />
+                                </div>
+                                <InputError message={errors.image} />
+                            </div>
 
-                        <div>
-                            <InputLabel htmlFor="image" value="Project Image" />
-                            <div className="mt-1 flex items-center justify-center border-2 border-dashed border-gray-300 rounded-2xl p-6 hover:border-primary transition-colors h-48 relative overflow-hidden group">
-                                {data.image ? (
-                                    <div className="absolute inset-0 p-2">
-                                        <img 
-                                            src={URL.createObjectURL(data.image)} 
-                                            className="w-full h-full object-cover rounded-xl"
-                                            alt="Preview"
-                                        />
-                                    </div>
-                                ) : (
-                                    <div className="text-center">
-                                        <ImageIcon className="mx-auto text-gray-300 mb-2" size={32} />
-                                        <p className="text-xs text-gray-500 font-medium">Click to upload image</p>
-                                    </div>
-                                )}
-                                <input
-                                    type="file"
-                                    className="absolute inset-0 opacity-0 cursor-pointer"
-                                    onChange={(e) => setData('image', e.target.files[0])}
-                                    accept="image/*"
+                            <div className="space-y-2">
+                                <InputLabel value="Gallery (Up to 5 images)" className="uppercase text-[10px] font-black tracking-widest text-gray-400" />
+                                <div className="grid grid-cols-3 gap-2">
+                                    <label className="aspect-square bg-gray-50 border-2 border-dashed border-gray-200 rounded-xl flex flex-col items-center justify-center text-gray-400 hover:border-primary/50 cursor-pointer">
+                                        <Plus size={16} />
+                                        <span className="text-[8px] font-black font-sans uppercase">Add</span>
+                                        <input type="file" multiple className="hidden" onChange={(e) => setData('gallery', Array.from(e.target.files).slice(0, 5))} />
+                                    </label>
+                                    {data.gallery.map((file, i) => (
+                                        <div key={i} className="aspect-square rounded-xl overflow-hidden bg-gray-200">
+                                            <img src={URL.createObjectURL(file)} className="w-full h-full object-cover" />
+                                        </div>
+                                    ))}
+                                    {editingProject?.image_gallery?.map((url, i) => (
+                                        <div key={`old-${i}`} className="aspect-square rounded-xl overflow-hidden bg-gray-200 opacity-50">
+                                            <img src={url} className="w-full h-full object-cover" />
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className="space-y-2">
+                                <InputLabel htmlFor="order_index" value="Sort Order" className="uppercase text-[10px] font-black tracking-widest text-gray-400" />
+                                <TextInput
+                                    id="order_index"
+                                    type="number"
+                                    className="w-full !rounded-2xl !border-gray-100 bg-gray-50"
+                                    value={data.order_index}
+                                    onChange={(e) => setData('order_index', e.target.value)}
                                 />
                             </div>
-                            <InputError message={errors.image} className="mt-2" />
-                        </div>
-
-                        <div>
-                            <InputLabel htmlFor="order_index" value="Sort Order" />
-                            <TextInput
-                                id="order_index"
-                                type="number"
-                                className="mt-1 block w-full !rounded-xl"
-                                value={data.order_index}
-                                onChange={(e) => setData('order_index', e.target.value)}
-                            />
-                            <InputError message={errors.order_index} className="mt-2" />
                         </div>
                     </div>
 
-                    <div className="mt-8 flex justify-end gap-3">
-                        <SecondaryButton onClick={closeModal} className="!rounded-xl">Cancel</SecondaryButton>
-                        <PrimaryButton className="!rounded-xl" disabled={processing}>
-                            {editingProject ? 'Update Project' : 'Publish Project'}
+                    <div className="space-y-2">
+                        <InputLabel htmlFor="case_study" value="Case Study (Markdown)" className="uppercase text-[10px] font-black tracking-widest text-gray-400" />
+                        <textarea
+                            id="case_study"
+                            className="w-full rounded-2xl border-gray-100 bg-gray-50 focus:ring-primary focus:border-primary min-h-[250px] font-mono text-sm leading-relaxed"
+                            value={data.case_study}
+                            onChange={(e) => setData('case_study', e.target.value)}
+                            placeholder="# The Challenge&#10;Describe the problem you were solving...&#10;&#10;# The Solution&#10;Describe how you built it..."
+                        ></textarea>
+                    </div>
+
+                    <div className="flex justify-end gap-4 pt-4 border-t border-gray-50">
+                        <SecondaryButton onClick={closeModal} className="!rounded-2xl">Cancel</SecondaryButton>
+                        <PrimaryButton className="!bg-primary !px-10 !py-4 !rounded-2xl !text-white shadow-xl shadow-primary/20" disabled={processing}>
+                            {editingProject ? 'Save Masterpiece' : 'Publish Project'}
                         </PrimaryButton>
                     </div>
                 </form>

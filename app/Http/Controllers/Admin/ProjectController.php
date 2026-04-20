@@ -25,6 +25,9 @@ class ProjectController extends Controller
             'link' => 'nullable|string|max:255',
             'image' => 'required|image|mimes:jpeg,png,jpg,webp|max:2048',
             'order_index' => 'nullable|integer',
+            'tech_stack' => 'nullable|array',
+            'case_study' => 'nullable|string',
+            'gallery.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
         if ($request->hasFile('image')) {
@@ -32,7 +35,16 @@ class ProjectController extends Controller
             $validated['image_url'] = Storage::url($path);
         }
 
-        unset($validated['image']);
+        if ($request->hasFile('gallery')) {
+            $galleryPaths = [];
+            foreach ($request->file('gallery') as $file) {
+                $path = $file->store('projects/gallery', 'public');
+                $galleryPaths[] = Storage::url($path);
+            }
+            $validated['image_gallery'] = $galleryPaths;
+        }
+
+        unset($validated['image'], $validated['gallery']);
         Project::create($validated);
 
         return redirect()->back()->with('success', 'Project created successfully.');
@@ -46,10 +58,12 @@ class ProjectController extends Controller
             'link' => 'nullable|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'order_index' => 'nullable|integer',
+            'tech_stack' => 'nullable|array',
+            'case_study' => 'nullable|string',
+            'gallery.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
         if ($request->hasFile('image')) {
-            // Delete old image if exists
             if ($project->image_url) {
                 $oldPath = str_replace('/storage/', '', $project->image_url);
                 Storage::disk('public')->delete($oldPath);
@@ -59,7 +73,24 @@ class ProjectController extends Controller
             $validated['image_url'] = Storage::url($path);
         }
 
-        unset($validated['image']);
+        if ($request->hasFile('gallery')) {
+            // Delete old gallery images
+            if ($project->image_gallery) {
+                foreach ($project->image_gallery as $url) {
+                    $oldPath = str_replace('/storage/', '', $url);
+                    Storage::disk('public')->delete($oldPath);
+                }
+            }
+
+            $galleryPaths = [];
+            foreach ($request->file('gallery') as $file) {
+                $path = $file->store('projects/gallery', 'public');
+                $galleryPaths[] = Storage::url($path);
+            }
+            $validated['image_gallery'] = $galleryPaths;
+        }
+
+        unset($validated['image'], $validated['gallery']);
         $project->update($validated);
 
         return redirect()->back()->with('success', 'Project updated successfully.');

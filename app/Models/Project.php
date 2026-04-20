@@ -7,4 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Project extends Model
 {
     protected $guarded = [];
+
+    protected $casts = [
+        'tech_stack' => 'array',
+        'image_gallery' => 'array',
+    ];
 }

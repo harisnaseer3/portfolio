@@ -17,10 +17,12 @@ class PortfolioController extends Controller
         return Inertia::render('Welcome', [
             'canLogin' => Route::has('login'),
             'canRegister' => Route::has('register'),
-            'skills' => Skill::orderBy('percentage', 'desc')->get(),
-            'services' => Service::orderBy('order_index')->get(),
-            'experiences' => Experience::orderBy('order_index')->get(),
-            'projects' => Project::orderBy('order_index')->get(),
+            'skills' => \App\Models\Skill::orderBy('percentage', 'desc')->get(),
+            'services' => \App\Models\Service::orderBy('order_index')->get(),
+            'experiences' => \App\Models\Experience::orderBy('order_index')->get(),
+            'projects' => \App\Models\Project::orderBy('order_index')->get(),
+            'testimonials' => \App\Models\Testimonial::orderBy('order_index')->get(),
+            'posts' => \App\Models\Post::where('is_published', true)->orderBy('created_at', 'desc')->take(3)->get(),
         ]);
     }
 }
