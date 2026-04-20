@@ -278,6 +278,38 @@ export default function Welcome({
                                 </Magnetic>
                             )}
                         </motion.div>
+
+                        <motion.div 
+                            initial={{ opacity: 0, y: 0 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.4 }}
+                            className="mt-12 pt-8 border-t border-gray-100 dark:border-slate-800 flex items-center gap-4"
+                        >
+                            <span className="text-xs font-black uppercase tracking-widest text-text-muted dark:text-slate-500 mr-4">Connect With Me:</span>
+                            <div className="flex gap-4">
+                                {settings?.social_github && (
+                                    <Magnetic>
+                                        <a href={settings.social_github} target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-white dark:bg-slate-900 rounded-2xl flex items-center justify-center text-gray-400 hover:text-primary dark:hover:text-primary-light transition-all border border-gray-100 dark:border-slate-800 hover:border-primary shadow-sm hover:shadow-premium">
+                                            <Github size={20} />
+                                        </a>
+                                    </Magnetic>
+                                )}
+                                {settings?.social_twitter && (
+                                    <Magnetic>
+                                        <a href={settings.social_twitter} target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-white dark:bg-slate-900 rounded-2xl flex items-center justify-center text-gray-400 hover:text-primary dark:hover:text-primary-light transition-all border border-gray-100 dark:border-slate-800 hover:border-primary shadow-sm hover:shadow-premium">
+                                            <Twitter size={20} />
+                                        </a>
+                                    </Magnetic>
+                                )}
+                                {settings?.social_linkedin && (
+                                    <Magnetic>
+                                        <a href={settings.social_linkedin} target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-white dark:bg-slate-900 rounded-2xl flex items-center justify-center text-gray-400 hover:text-primary dark:hover:text-primary-light transition-all border border-gray-100 dark:border-slate-800 hover:border-primary shadow-sm hover:shadow-premium">
+                                            <Linkedin size={20} />
+                                        </a>
+                                    </Magnetic>
+                                )}
+                            </div>
+                        </motion.div>
                     </div>
 
                     <div className="md:w-1/2 relative lg:flex lg:justify-end">
