@@ -11,27 +11,10 @@ import Modal from '@/Components/Modal';
 import CustomCursor from '@/Components/CustomCursor';
 import Magnetic from '@/Components/Magnetic';
 import ScrollProgress from '@/Components/ScrollProgress';
+import Nav from '@/Components/Nav';
+import { Github, Twitter, Linkedin } from '@/Components/SocialIcons';
 import axios from 'axios';
 
-const Github = ({ size = 24, className = "" }) => (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
-    </svg>
-);
-
-const Twitter = ({ size = 24, className = "" }) => (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-        <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z" />
-    </svg>
-);
-
-const Linkedin = ({ size = 24, className = "" }) => (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-        <rect width="4" height="12" x="2" y="9" />
-        <circle cx="4" cy="4" r="2" />
-    </svg>
-);
 
 const IconResolver = ({ iconName, size = 24, className = "" }) => {
     const icons = { Palette, Code2, Smartphone, Briefcase, Rocket, Star, MapPin, Phone, Send, Mail, Code, Database };
@@ -39,127 +22,6 @@ const IconResolver = ({ iconName, size = 24, className = "" }) => {
     return <IconComponent size={size} className={className} />;
 };
 
-const Nav = ({ onHireMeClick, theme, toggleTheme, settings }) => {
-    const [scrolled, setScrolled] = useState(false);
-    const [mobileMenu, setMobileMenu] = useState(false);
-
-    useEffect(() => {
-        const handleScroll = () => setScrolled(window.scrollY > 50);
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
-
-    const navLinks = [
-        { name: 'Home', href: '#' },
-        { name: 'Services', href: '#services' },
-        { name: 'Skills', href: '#skills' },
-        { name: 'Projects', href: '#projects' },
-        { name: 'Experience', href: '#experience' },
-        { name: 'Contact', href: '#contact' },
-    ];
-
-    return (
-        <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? 'glass py-4 shadow-xl' : 'py-8'}`}>
-            <div className="container mx-auto px-6 flex justify-between items-center">
-                <div className="flex items-center gap-4 group cursor-pointer" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
-                    <div className="flex items-center gap-2">
-                        {settings?.logo_url ? (
-                            <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-primary/20">
-                                <img src={settings.logo_url} alt="Logo" className="w-full h-full object-cover" />
-                            </div>
-                        ) : (
-                            <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white rotate-3 group-hover:rotate-12 transition-transform font-black text-xl shadow-lg shadow-primary/20">H</div>
-                        )}
-                    </div>
-                    
-                    <div className="flex flex-col border-l border-gray-200 dark:border-slate-800 pl-4">
-                        <span className="text-lg font-black tracking-tighter text-gray-900 dark:text-white uppercase leading-none">
-                            {settings?.site_name || "Haris Naseer"}
-                        </span>
-                        <span className="text-[10px] font-bold text-primary dark:text-primary-light uppercase tracking-[0.2em] mt-1 leading-none">
-                            Web Developer
-                        </span>
-                    </div>
-                </div>
-
-                <div className="hidden md:flex items-center gap-10">
-                    {navLinks.map((link) => (
-                        <a 
-                            key={link.name} 
-                            href={link.href} 
-                            className="text-sm font-bold text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary-light transition-colors uppercase tracking-widest"
-                        >
-                            {link.name}
-                        </a>
-                    ))}
-                    
-                    <Magnetic>
-                        <button 
-                            onClick={onHireMeClick}
-                            className="px-6 py-2.5 bg-primary text-white rounded-full font-semibold hover:bg-primary-hover transition-all shadow-lg shadow-primary/20"
-                        >
-                            Hire Me
-                        </button>
-                    </Magnetic>
-
-                    <button 
-                        onClick={toggleTheme}
-                        className="p-2.5 bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-yellow-400 rounded-full hover:scale-110 transition-all"
-                    >
-                        {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
-                    </button>
-                </div>
-
-                {/* Mobile Toggle */}
-                <div className="md:hidden flex items-center gap-4">
-                     <button 
-                        onClick={toggleTheme}
-                        className="p-2 bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-yellow-400 rounded-full"
-                    >
-                        {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
-                    </button>
-                    <button 
-                        onClick={() => setMobileMenu(!mobileMenu)}
-                        className="p-2 text-gray-900 dark:text-white"
-                    >
-                        {mobileMenu ? <X size={28} /> : <Menu size={28} />}
-                    </button>
-                </div>
-            </div>
-
-            {/* Mobile Menu */}
-            <AnimatePresence>
-                {mobileMenu && (
-                    <motion.div 
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        className="md:hidden glass border-t border-gray-100 dark:border-slate-800 overflow-hidden"
-                    >
-                        <div className="container mx-auto px-6 py-8 flex flex-col gap-6">
-                            {navLinks.map((link) => (
-                                <a 
-                                    key={link.name} 
-                                    href={link.href} 
-                                    onClick={() => setMobileMenu(false)}
-                                    className="text-lg font-bold text-gray-900 dark:text-white flex items-center justify-between"
-                                >
-                                    {link.name} <ChevronRight size={18} className="text-primary" />
-                                </a>
-                            ))}
-                            <button 
-                                onClick={() => { setMobileMenu(false); onHireMeClick(); }}
-                                className="w-full py-4 bg-primary text-white rounded-2xl font-bold shadow-lg shadow-primary/20"
-                            >
-                                Hire Me
-                            </button>
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
-        </nav>
-    );
-};
 
 const SkillBar = ({ skill, percentage }) => (
     <div className="mb-6">

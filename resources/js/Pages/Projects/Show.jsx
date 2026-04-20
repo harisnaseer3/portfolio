@@ -1,12 +1,13 @@
 import { Head, Link } from '@inertiajs/react';
 import { 
-    Github, Twitter, Linkedin, Mail, ExternalLink, 
+    Mail, ExternalLink, 
     Palette, Code2, Smartphone, Briefcase, Rocket,
     ArrowLeft, Star, MapPin, Phone, Send, Menu, X, ChevronRight, Download, CheckCircle,
     Sun, Moon, Code, Database, Calendar, Tag, User, ArrowRight
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import Nav from '@/Components/Nav'; // Wait, I need to make sure Nav is extracted or handle it here
+import Nav from '@/Components/Nav';
+import { Github, Twitter, Linkedin } from '@/Components/SocialIcons';
 import ReactMarkdown from 'react-markdown';
 import { motion } from 'framer-motion';
 
@@ -28,20 +29,15 @@ export default function Show({ project, settings }) {
         <div className="min-h-screen bg-white dark:bg-slate-950 transition-colors duration-500 pb-20">
             <Head title={`${project.title} | Case Study`} />
             
-            {/* Simple Nav for Detail Page */}
-            <nav className="fixed top-0 w-full z-50 glass py-4 shadow-sm border-b border-gray-100 dark:border-slate-900">
-                <div className="container mx-auto px-6 flex justify-between items-center">
-                    <Link href="/" className="flex items-center gap-2 text-gray-900 dark:text-white font-black group">
-                        <ArrowLeft className="group-hover:-translate-x-1 transition-transform" /> Back to Portfolio
-                    </Link>
-                    <button 
-                        onClick={toggleTheme}
-                        className="p-2.5 bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-yellow-400 rounded-full transition-all"
-                    >
-                        {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
-                    </button>
-                </div>
-            </nav>
+            <Nav 
+                onHireMeClick={() => {
+                    window.location.href = '/#contact';
+                }} 
+                theme={theme}
+                toggleTheme={toggleTheme}
+                settings={settings}
+                isSubPage={true}
+            />
 
             {/* Hero Header */}
             <section className="pt-32 pb-16 bg-gray-50 dark:bg-slate-900/50">
