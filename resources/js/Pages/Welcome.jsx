@@ -259,6 +259,8 @@ export default function Welcome({
     const [showAllSkills, setShowAllSkills] = useState(false);
     const [showAllServices, setShowAllServices] = useState(false);
     const [showAllExperiences, setShowAllExperiences] = useState(false);
+    const [showAllTestimonials, setShowAllTestimonials] = useState(false);
+    const [showAllPosts, setShowAllPosts] = useState(false);
     const [isHireMeModalOpen, setIsHireMeModalOpen] = useState(false);
     const { site_theme } = usePage().props;
     const [theme, setTheme] = useState(localStorage.getItem('theme') || site_theme || 'light');
@@ -330,6 +332,8 @@ export default function Welcome({
     const skillsToDisplay = showAllSkills ? displaySkills : displaySkills?.slice(0, 4);
     const servicesToDisplay = showAllServices ? displayServices : displayServices?.slice(0, 4);
     const experiencesToDisplay = showAllExperiences ? displayExperiences : displayExperiences?.slice(0, 4);
+    const testimonialsToDisplay = showAllTestimonials ? displayTestimonials : displayTestimonials?.slice(0, 4);
+    const postsToDisplay = showAllPosts ? displayPosts : displayPosts?.slice(0, 4);
 
     return (
         <div className="min-h-screen bg-[var(--bg-main)] dark:bg-slate-950 transition-colors duration-500">
@@ -458,12 +462,12 @@ export default function Welcome({
                     </div>
 
                     {displayServices.length > 4 && !showAllServices && (
-                        <div className="mt-12 text-center">
+                        <div className="mt-16 text-center">
                             <button 
                                 onClick={() => setShowAllServices(true)}
-                                className="px-8 py-3 border-2 border-primary text-primary dark:text-primary-light rounded-full font-bold hover:bg-primary hover:text-white transition-all shadow-lg hover:shadow-primary/20"
+                                className="px-10 py-4 border-2 border-primary text-primary dark:text-primary-light rounded-full font-bold hover:bg-primary hover:text-white transition-all group lg:text-lg"
                             >
-                                View More Services
+                                View All Services <ArrowRight className="inline-block ml-2 group-hover:translate-x-2 transition-transform" />
                             </button>
                         </div>
                     )}
@@ -519,12 +523,14 @@ export default function Welcome({
                             </AnimatePresence>
 
                             {displaySkills.length > 4 && !showAllSkills && (
-                                <button 
-                                    onClick={() => setShowAllSkills(true)}
-                                    className="text-primary font-bold flex items-center gap-2 mt-4 hover:gap-4 transition-all"
-                                >
-                                    Explore all skills <ArrowRight size={18} />
-                                </button>
+                                <div className="mt-8">
+                                    <button 
+                                        onClick={() => setShowAllSkills(true)}
+                                        className="px-10 py-4 border-2 border-primary text-primary dark:text-primary-light rounded-full font-bold hover:bg-primary hover:text-white transition-all group lg:text-lg"
+                                    >
+                                        View All Skills <ArrowRight className="inline-block ml-2 group-hover:translate-x-2 transition-transform" />
+                                    </button>
+                                </div>
                             )}
                         </div>
                     </div>
@@ -565,9 +571,9 @@ export default function Welcome({
                             <div className="mt-16 text-center">
                                 <button 
                                     onClick={() => setShowAllExperiences(true)}
-                                    className="px-8 py-3 bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 text-gray-900 dark:text-white rounded-2xl font-bold shadow-sm hover:shadow-premium transition-all"
+                                    className="px-10 py-4 border-2 border-primary text-primary dark:text-primary-light rounded-full font-bold hover:bg-primary hover:text-white transition-all group lg:text-lg"
                                 >
-                                    Load Full History
+                                    Load Full History <ArrowRight className="inline-block ml-2 group-hover:translate-x-2 transition-transform" />
                                 </button>
                             </div>
                         )}
@@ -584,30 +590,43 @@ export default function Welcome({
                             <h2 className="text-4xl md:text-5xl font-black text-text-main dark:text-white">Client Stories</h2>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-                            {displayTestimonials.map((t, idx) => (
-                                <motion.div 
-                                    key={t.id}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ delay: idx * 0.1 }}
-                                    className={`bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 shadow-premium border border-gray-100 dark:border-slate-800 ${idx === 0 ? 'md:col-span-8' : idx === 1 ? 'md:col-span-4' : 'md:col-span-6'}`}
-                                >
-                                    <div className="flex items-center gap-4 mb-6">
-                                        <div className="w-14 h-14 rounded-2xl overflow-hidden border-2 border-primary/20">
-                                            <img src={t.image_url || "/api/placeholder/100/100"} alt={t.name} className="w-full h-full object-cover" />
+                            <AnimatePresence mode="popLayout">
+                                {testimonialsToDisplay.map((t, idx) => (
+                                    <motion.div 
+                                        key={t.id}
+                                        initial={{ opacity: 0, y: 20 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ delay: idx * 0.1 }}
+                                        className={`bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 shadow-premium border border-gray-100 dark:border-slate-800 ${idx === 0 ? 'md:col-span-8' : idx === 1 ? 'md:col-span-4' : 'md:col-span-6'}`}
+                                    >
+                                        <div className="flex items-center gap-4 mb-6">
+                                            <div className="w-14 h-14 rounded-2xl overflow-hidden border-2 border-primary/20">
+                                                <img src={t.image_url || "/api/placeholder/100/100"} alt={t.name} className="w-full h-full object-cover" />
+                                            </div>
+                                            <div>
+                                                <h4 className="font-black text-gray-900 dark:text-white leading-none mb-1">{t.name}</h4>
+                                                <p className="text-[10px] font-black text-primary dark:text-primary-light uppercase tracking-widest">{t.role} @ {t.company}</p>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <h4 className="font-black text-gray-900 dark:text-white leading-none mb-1">{t.name}</h4>
-                                            <p className="text-[10px] font-black text-primary dark:text-primary-light uppercase tracking-widest">{t.role} @ {t.company}</p>
-                                        </div>
-                                    </div>
-                                    <p className="text-lg text-gray-500 dark:text-slate-400 font-medium italic leading-relaxed">
-                                        "{t.content}"
-                                    </p>
-                                </motion.div>
-                            ))}
+                                        <p className="text-lg text-gray-500 dark:text-slate-400 font-medium italic leading-relaxed">
+                                            "{t.content}"
+                                        </p>
+                                    </motion.div>
+                                ))}
+                            </AnimatePresence>
                         </div>
+
+                        {displayTestimonials.length > 4 && !showAllTestimonials && (
+                            <div className="mt-16 text-center">
+                                <button 
+                                    onClick={() => setShowAllTestimonials(true)}
+                                    className="px-10 py-4 border-2 border-primary text-primary dark:text-primary-light rounded-full font-bold hover:bg-primary hover:text-white transition-all group lg:text-lg"
+                                >
+                                    View All Testimonials <ArrowRight className="inline-block ml-2 group-hover:translate-x-2 transition-transform" />
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </section>
             )}
@@ -667,26 +686,39 @@ export default function Welcome({
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                            {displayPosts.map((post) => (
-                                <motion.div 
-                                    key={post.id}
-                                    whileHover={{ y: -10 }}
-                                    className="bg-white dark:bg-slate-900 rounded-[2.5rem] overflow-hidden shadow-premium border border-gray-100 dark:border-slate-800 group"
-                                >
-                                    <div className="h-48 overflow-hidden">
-                                        <img src={post.featured_image || "/api/placeholder/400/250"} alt={post.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                                    </div>
-                                    <div className="p-8">
-                                        <span className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 block italic">{new Date(post.created_at).toLocaleDateString()}</span>
-                                        <h3 className="text-xl font-black text-gray-900 dark:text-white mb-4 line-clamp-2">{post.title}</h3>
-                                        <p className="text-gray-500 dark:text-slate-400 text-sm mb-6 line-clamp-2">{post.excerpt || post.content.substring(0, 100)}</p>
-                                        <div className="flex items-center gap-2 text-primary dark:text-primary-light font-black text-sm group-hover:gap-4 transition-all">
-                                            Read Article <ArrowRight size={16} />
+                            <AnimatePresence mode="popLayout">
+                                {postsToDisplay.map((post) => (
+                                    <motion.div 
+                                        key={post.id}
+                                        whileHover={{ y: -10 }}
+                                        className="bg-white dark:bg-slate-900 rounded-[2.5rem] overflow-hidden shadow-premium border border-gray-100 dark:border-slate-800 group"
+                                    >
+                                        <div className="h-48 overflow-hidden">
+                                            <img src={post.featured_image || "/api/placeholder/400/250"} alt={post.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                                         </div>
-                                    </div>
-                                </motion.div>
-                            ))}
+                                        <div className="p-8">
+                                            <span className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 block italic">{new Date(post.created_at).toLocaleDateString()}</span>
+                                            <h3 className="text-xl font-black text-gray-900 dark:text-white mb-4 line-clamp-2">{post.title}</h3>
+                                            <p className="text-gray-500 dark:text-slate-400 text-sm mb-6 line-clamp-2">{post.excerpt || post.content.substring(0, 100)}</p>
+                                            <div className="flex items-center gap-2 text-primary dark:text-primary-light font-black text-sm group-hover:gap-4 transition-all">
+                                                Read Article <ArrowRight size={16} />
+                                            </div>
+                                        </div>
+                                    </motion.div>
+                                ))}
+                            </AnimatePresence>
                         </div>
+
+                        {displayPosts.length > 4 && !showAllPosts && (
+                            <div className="mt-16 text-center">
+                                <button 
+                                    onClick={() => setShowAllPosts(true)}
+                                    className="px-10 py-4 border-2 border-primary text-primary dark:text-primary-light rounded-full font-bold hover:bg-primary hover:text-white transition-all group lg:text-lg"
+                                >
+                                    View All Articles <ArrowRight className="inline-block ml-2 group-hover:translate-x-2 transition-transform" />
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </section>
             )}
