@@ -22,8 +22,8 @@ const Nav = ({ onHireMeClick, theme, toggleTheme, settings }) => {
         { name: 'Home', href: '/#' },
         { name: 'Services', href: '/#services' },
         { name: 'Skills', href: '/#skills' },
-        { name: 'Projects', href: '/#projects' },
         { name: 'Experience', href: '/#experience' },
+        { name: 'Projects', href: '/#projects' },
         ...(hasEducation ? [{ name: 'Academic', href: '/#academic' }] : []),
         { name: 'Contact', href: '/#contact' },
     ];
