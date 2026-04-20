@@ -4,6 +4,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Magnetic from '@/Components/Magnetic';
+import { usePage } from '@inertiajs/react';
 
 const Nav = ({ onHireMeClick, theme, toggleTheme, settings }) => {
     const [scrolled, setScrolled] = useState(false);
@@ -15,12 +16,15 @@ const Nav = ({ onHireMeClick, theme, toggleTheme, settings }) => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    const { hasEducation } = usePage().props;
+
     const navLinks = [
         { name: 'Home', href: '/#' },
         { name: 'Services', href: '/#services' },
         { name: 'Skills', href: '/#skills' },
         { name: 'Projects', href: '/#projects' },
         { name: 'Experience', href: '/#experience' },
+        ...(hasEducation ? [{ name: 'Academic', href: '/#academic' }] : []),
         { name: 'Contact', href: '/#contact' },
     ];
 

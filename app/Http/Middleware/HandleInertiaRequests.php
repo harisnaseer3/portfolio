@@ -47,6 +47,7 @@ class HandleInertiaRequests extends Middleware
                 'success' => $request->session()->get('success'),
             ],
             'unreadMessagesCount' => $request->user() ? ContactMessage::where('is_read', false)->count() : 0,
+            'hasEducation' => \App\Models\Education::exists(),
         ];
     }
 }

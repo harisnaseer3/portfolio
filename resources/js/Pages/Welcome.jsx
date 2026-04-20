@@ -2,7 +2,7 @@ import {
     Mail, ExternalLink, 
     Palette, Code2, Smartphone, Briefcase, Rocket,
     ArrowRight, Star, MapPin, Phone, Send, Menu, X, ChevronRight, Download, CheckCircle,
-    Sun, Moon, Code, Database
+    Sun, Moon, Code, Database, GraduationCap, Award
 } from 'lucide-react';
 import { useState, useEffect, useMemo, useRef, memo } from 'react';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
@@ -15,9 +15,46 @@ import Nav from '@/Components/Nav';
 import { Github, Twitter, Linkedin } from '@/Components/SocialIcons';
 import axios from 'axios';
 
+const EducationCard = ({ title, institution, duration, description, icon: iconName, index, credential_url }) => (
+    <motion.div 
+        initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, delay: index * 0.1 }}
+        whileHover={{ y: -5 }}
+        className="p-8 bg-white dark:bg-slate-900 rounded-[2.5rem] border border-gray-100 dark:border-slate-800 shadow-card hover:shadow-premium transition-all group flex flex-col h-full"
+    >
+        <div className="flex justify-between items-start mb-6">
+            <div className="w-14 h-14 bg-primary/10 dark:bg-primary/20 rounded-2xl flex items-center justify-center text-primary dark:text-primary-light group-hover:scale-110 transition-transform">
+                <IconResolver iconName={iconName} size={28} />
+            </div>
+            <div className="flex flex-col items-end gap-2">
+                <span className="px-4 py-1.5 bg-gray-50 dark:bg-slate-800 text-gray-500 dark:text-slate-400 rounded-full text-[10px] font-black uppercase tracking-widest border border-gray-100 dark:border-slate-700">
+                    {duration}
+                </span>
+                {credential_url && (
+                    <a 
+                        href={credential_url} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-primary hover:text-primary-hover transition-colors"
+                    >
+                        Verify <ExternalLink size={12} />
+                    </a>
+                )}
+            </div>
+        </div>
+        <h3 className="text-xl font-black text-gray-900 dark:text-white mb-2 tracking-tight group-hover:text-primary transition-colors">{title}</h3>
+        <p className="text-sm font-bold text-primary dark:text-primary-light uppercase tracking-widest mb-4">{institution}</p>
+        <p className="text-text-muted dark:text-slate-400 font-medium leading-relaxed italic mt-auto">
+            "{description}"
+        </p>
+    </motion.div>
+);
+
 
 const IconResolver = ({ iconName, size = 24, className = "" }) => {
-    const icons = { Palette, Code2, Smartphone, Briefcase, Rocket, Star, MapPin, Phone, Send, Mail, Code, Database };
+    const icons = { Palette, Code2, Smartphone, Briefcase, Rocket, Star, MapPin, Phone, Send, Mail, Code, Database, GraduationCap, Award };
     const IconComponent = icons[iconName] || Code;
     return <IconComponent size={size} className={className} />;
 };
@@ -113,7 +150,8 @@ export default function Welcome({
     auth, canLogin, canRegister, 
     skills, services, experiences, projects,
     testimonials: displayTestimonials,
-    posts: displayPosts
+    posts: displayPosts,
+    education: dbEducation
 }) {
     const { settings } = usePage().props;
     const [activeTab, setActiveTab] = useState('ALL');
@@ -123,6 +161,7 @@ export default function Welcome({
     const [showAllExperiences, setShowAllExperiences] = useState(false);
     const [showAllTestimonials, setShowAllTestimonials] = useState(false);
     const [showAllPosts, setShowAllPosts] = useState(false);
+    const [showAllEducation, setShowAllEducation] = useState(false);
     const [isHireMeModalOpen, setIsHireMeModalOpen] = useState(false);
     const { site_theme } = usePage().props;
     const [theme, setTheme] = useState(localStorage.getItem('theme') || site_theme || 'light');
@@ -196,6 +235,10 @@ export default function Welcome({
     const experiencesToDisplay = showAllExperiences ? displayExperiences : displayExperiences?.slice(0, 4);
     const testimonialsToDisplay = showAllTestimonials ? displayTestimonials : displayTestimonials?.slice(0, 4);
     const postsToDisplay = showAllPosts ? displayPosts : displayPosts?.slice(0, 4);
+
+    const displayEducation = dbEducation || [];
+
+    const educationToDisplay = showAllEducation ? displayEducation : displayEducation?.slice(0, 4);
 
     return (
         <div className="min-h-screen bg-[var(--bg-main)] dark:bg-slate-950 transition-colors duration-500">
@@ -474,6 +517,46 @@ export default function Welcome({
                     </div>
                 </div>
             </section>
+
+            {/* Academic Section */}
+            {displayEducation?.length > 0 && (
+                <section id="academic" className="section-padding">
+                    <div className="container mx-auto px-6">
+                        <div className="text-center mb-10">
+                            <span className="text-primary font-bold uppercase tracking-widest text-sm mb-2 block">Academic Foundation</span>
+                            <h2 className="text-4xl md:text-5xl font-black text-text-main dark:text-white">Education & Certifications</h2>
+                        </div>
+
+                        <div className="grid sm:grid-cols-2 lg:grid-cols-2 gap-8">
+                            <AnimatePresence mode="popLayout">
+                                {educationToDisplay.map((edu, idx) => (
+                                    <EducationCard 
+                                        key={edu.id} 
+                                        index={idx}
+                                        title={edu.title} 
+                                        institution={edu.institution}
+                                        duration={edu.duration}
+                                        description={edu.description}
+                                        icon={edu.icon}
+                                        credential_url={edu.credential_url}
+                                    />
+                                ))}
+                            </AnimatePresence>
+                        </div>
+
+                        {displayEducation.length > 4 && !showAllEducation && (
+                            <div className="mt-10 text-center">
+                                <button 
+                                    onClick={() => setShowAllEducation(true)}
+                                    className="px-10 py-4 border-2 border-primary text-primary dark:text-primary-light rounded-full font-bold hover:bg-primary hover:text-white transition-all group lg:text-lg"
+                                >
+                                    View Detailed Credentials <ArrowRight className="inline-block ml-2 group-hover:translate-x-2 transition-transform" />
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                </section>
+            )}
 
             {/* Testimonials Bento Section */}
             {displayTestimonials?.length > 0 && (

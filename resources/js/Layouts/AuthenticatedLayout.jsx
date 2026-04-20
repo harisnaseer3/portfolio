@@ -67,6 +67,12 @@ export default function AuthenticatedLayout({ header, children }) {
                                     Experiences
                                 </NavLink>
                                 <NavLink
+                                    href={route('admin.education.index')}
+                                    active={route().current('admin.education.*')}
+                                >
+                                    Academic
+                                </NavLink>
+                                <NavLink
                                     href={route('admin.settings.index')}
                                     active={route().current('admin.settings.*')}
                                 >
@@ -217,6 +223,12 @@ export default function AuthenticatedLayout({ header, children }) {
                             active={route().current('admin.experiences.*')}
                         >
                             Experiences
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('admin.education.index')}
+                            active={route().current('admin.education.*')}
+                        >
+                            Academic
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
                             href={route('admin.messages.index')}

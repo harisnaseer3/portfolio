@@ -22,6 +22,7 @@ class PortfolioController extends Controller
             'experiences' => \App\Models\Experience::orderBy('order_index')->get(),
             'projects' => \App\Models\Project::orderBy('order_index')->get(),
             'testimonials' => \App\Models\Testimonial::orderBy('order_index')->get(),
+            'education' => \App\Models\Education::orderBy('order_index')->get(),
             'posts' => \App\Models\Post::where('is_published', true)->orderBy('created_at', 'desc')->take(3)->get(),
         ]);
     }

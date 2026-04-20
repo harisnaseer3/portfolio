@@ -28,6 +28,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 'messages' => \App\Models\ContactMessage::count(),
                 'posts' => \App\Models\Post::count(),
                 'testimonials' => \App\Models\Testimonial::count(),
+                'education' => \App\Models\Education::count(),
             ],
             'analytics' => \App\Models\Analytic::where('date', '>=', now()->subDays(30))
                 ->orderBy('date', 'asc')
@@ -50,6 +51,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('projects', \App\Http\Controllers\Admin\ProjectController::class);
         Route::resource('testimonials', \App\Http\Controllers\Admin\TestimonialController::class);
         Route::resource('posts', \App\Http\Controllers\Admin\PostController::class);
+        Route::resource('education', \App\Http\Controllers\Admin\EducationController::class);
         Route::resource('messages', \App\Http\Controllers\Admin\MessageController::class)->only(['index', 'update', 'destroy']);
 
         Route::get('settings', [\App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings.index');
