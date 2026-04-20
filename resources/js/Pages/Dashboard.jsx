@@ -49,10 +49,10 @@ export default function Dashboard({ auth, stats, analytics }) {
         <AuthenticatedLayout
             header={
                 <div className="flex justify-between items-center w-full">
-                    <h2 className="text-xl font-bold leading-tight text-gray-800">
+                    <h2 className="text-xl font-bold leading-tight text-text-main">
                         Welcome back, {auth.user.name} 👋
                     </h2>
-                    <div className="text-sm text-gray-500 font-medium">
+                    <div className="text-sm text-text-muted font-medium">
                         {new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
                     </div>
                 </div>
@@ -95,17 +95,17 @@ export default function Dashboard({ auth, stats, analytics }) {
                     {/* Stats Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                         {statCards.map((stat, idx) => (
-                            <Link key={idx} href={stat.link} className="group overflow-hidden bg-white border border-gray-100 rounded-[2rem] p-6 shadow-premium hover:border-primary/20 transition-all">
+                            <Link key={idx} href={stat.link} className="group overflow-hidden bg-[var(--bg-card)] border border-[var(--border-main)] rounded-[2rem] p-6 shadow-premium hover:border-primary/20 transition-all">
                                 <div className="flex items-center justify-between mb-4">
                                     <div className={`p-4 rounded-xl ${stat.color} text-white shadow-lg`}>
                                         <stat.icon size={24} />
                                     </div>
-                                    <ArrowRight className="text-gray-200 group-hover:text-primary transition-colors" size={20} />
+                                    <ArrowRight className="text-text-muted/30 group-hover:text-primary transition-colors" size={20} />
                                 </div>
                                 <div className="space-y-1">
-                                    <h4 className="text-gray-400 text-xs font-black uppercase tracking-widest">{stat.label}</h4>
-                                    <div className="text-2xl font-black text-gray-900">{stat.value}</div>
-                                    <p className="text-xs text-gray-400 font-medium">{stat.description}</p>
+                                    <h4 className="text-text-muted text-xs font-black uppercase tracking-widest">{stat.label}</h4>
+                                    <div className="text-2xl font-black text-text-main">{stat.value}</div>
+                                    <p className="text-xs text-text-muted font-medium">{stat.description}</p>
                                 </div>
                             </Link>
                         ))}
@@ -113,15 +113,15 @@ export default function Dashboard({ auth, stats, analytics }) {
 
                     {/* Analytics Section */}
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        <div className="lg:col-span-2 bg-white rounded-[2.5rem] border border-gray-100 p-8 shadow-premium overflow-hidden">
+                        <div className="lg:col-span-2 bg-[var(--bg-card)] rounded-[2.5rem] border border-[var(--border-main)] p-8 shadow-premium overflow-hidden">
                             <div className="flex justify-between items-center mb-8">
                                 <div className="flex items-center gap-3">
-                                    <div className="p-2 bg-blue-50 text-blue-600 rounded-lg">
+                                    <div className="p-2 bg-blue-500/10 text-blue-500 rounded-lg">
                                         <TrendingUp size={20} />
                                     </div>
-                                    <h4 className="text-lg font-bold text-gray-900">Portfolio Activity</h4>
+                                    <h4 className="text-lg font-bold text-text-main">Portfolio Activity</h4>
                                 </div>
-                                <span className="text-xs font-black text-gray-400 uppercase tracking-widest bg-gray-50 px-3 py-1 rounded-full">Last 30 Days</span>
+                                <span className="text-xs font-black text-text-muted uppercase tracking-widest bg-[var(--bg-input)] px-3 py-1 rounded-full">Last 30 Days</span>
                             </div>
                             
                             <div className="h-72 w-full">
@@ -134,20 +134,20 @@ export default function Dashboard({ auth, stats, analytics }) {
                                                     <stop offset="95%" stopColor="#4F46E5" stopOpacity={0}/>
                                                 </linearGradient>
                                             </defs>
-                                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#F1F5F9" />
-                                            <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{fontSize: 10, fontWeight: 700, fill: '#94A3B8'}} dy={10} />
-                                            <YAxis axisLine={false} tickLine={false} tick={{fontSize: 10, fontWeight: 700, fill: '#94A3B8'}} />
+                                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--border-main)" />
+                                            <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{fontSize: 10, fontWeight: 700, fill: 'var(--text-muted)'}} dy={10} />
+                                            <YAxis axisLine={false} tickLine={false} tick={{fontSize: 10, fontWeight: 700, fill: 'var(--text-muted)'}} />
                                             <Tooltip 
-                                                contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1)' }}
+                                                contentStyle={{ backgroundColor: 'var(--bg-card)', borderRadius: '16px', border: '1px solid var(--border-main)', boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1)' }}
                                                 itemStyle={{ fontWeight: 800, fontSize: '12px' }}
-                                                labelStyle={{ fontWeight: 800, color: '#94A3B8', marginBottom: '4px' }}
+                                                labelStyle={{ fontWeight: 800, color: 'var(--text-muted)', marginBottom: '4px' }}
                                             />
                                             <Area type="monotone" dataKey="page_view" stroke="#4F46E5" strokeWidth={3} fillOpacity={1} fill="url(#colorPv)" />
                                             <Area type="monotone" dataKey="hire_me_click" stroke="#EC4899" strokeWidth={3} fill="none" />
                                         </AreaChart>
                                     </ResponsiveContainer>
                                 ) : (
-                                    <div className="h-full flex flex-col items-center justify-center text-gray-400">
+                                    <div className="h-full flex flex-col items-center justify-center text-text-muted">
                                         <TrendingUp size={48} className="mb-4 opacity-10" />
                                         <p className="font-bold">No activity data yet</p>
                                     </div>
@@ -155,32 +155,32 @@ export default function Dashboard({ auth, stats, analytics }) {
                             </div>
                         </div>
 
-                        <div className="bg-white rounded-[2.5rem] border border-gray-100 p-8 shadow-premium">
-                             <h4 className="text-lg font-bold mb-6 text-gray-900">Quick Actions</h4>
+                        <div className="bg-[var(--bg-card)] rounded-[2.5rem] border border-[var(--border-main)] p-8 shadow-premium">
+                             <h4 className="text-lg font-bold mb-6 text-text-main">Quick Actions</h4>
                              <div className="grid grid-cols-1 gap-4">
-                                 <Link href={route('admin.projects.index')} className="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl hover:bg-primary/5 hover:text-primary transition-all group">
-                                     <div className="w-10 h-10 bg-white border border-gray-100 rounded-xl flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
+                                 <Link href={route('admin.projects.index')} className="flex items-center gap-4 p-4 bg-[var(--bg-input)] border border-transparent rounded-2xl hover:border-primary/20 hover:text-primary transition-all group">
+                                     <div className="w-10 h-10 bg-[var(--bg-card)] border border-[var(--border-main)] rounded-xl flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
                                          <Plus size={18} />
                                      </div>
-                                     <span className="text-sm font-bold">New Project</span>
+                                     <span className="text-sm font-bold text-text-main group-hover:text-primary transition-colors">New Project</span>
                                  </Link>
-                                 <Link href={route('admin.posts.index')} className="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl hover:bg-primary/5 hover:text-primary transition-all group">
-                                     <div className="w-10 h-10 bg-white border border-gray-100 rounded-xl flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
+                                 <Link href={route('admin.posts.index')} className="flex items-center gap-4 p-4 bg-[var(--bg-input)] border border-transparent rounded-2xl hover:border-primary/20 hover:text-primary transition-all group">
+                                     <div className="w-10 h-10 bg-[var(--bg-card)] border border-[var(--border-main)] rounded-xl flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
                                          <BookOpen size={18} />
                                      </div>
-                                     <span className="text-sm font-bold">Write Article</span>
+                                     <span className="text-sm font-bold text-text-main group-hover:text-primary transition-colors">Write Article</span>
                                  </Link>
-                                 <Link href={route('admin.testimonials.index')} className="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl hover:bg-primary/5 hover:text-primary transition-all group">
-                                     <div className="w-10 h-10 bg-white border border-gray-100 rounded-xl flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
+                                 <Link href={route('admin.testimonials.index')} className="flex items-center gap-4 p-4 bg-[var(--bg-input)] border border-transparent rounded-2xl hover:border-primary/20 hover:text-primary transition-all group">
+                                     <div className="w-10 h-10 bg-[var(--bg-card)] border border-[var(--border-main)] rounded-xl flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
                                          <Star size={18} />
                                      </div>
-                                     <span className="text-sm font-bold">Add Testimonial</span>
+                                     <span className="text-sm font-bold text-text-main group-hover:text-primary transition-colors">Add Testimonial</span>
                                  </Link>
-                                 <Link href={route('admin.settings.index')} className="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl hover:bg-primary/5 hover:text-primary transition-all group">
-                                     <div className="w-10 h-10 bg-white border border-gray-100 rounded-xl flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
+                                 <Link href={route('admin.settings.index')} className="flex items-center gap-4 p-4 bg-[var(--bg-input)] border border-transparent rounded-2xl hover:border-primary/20 hover:text-primary transition-all group">
+                                     <div className="w-10 h-10 bg-[var(--bg-card)] border border-[var(--border-main)] rounded-xl flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
                                          <Zap size={18} />
                                      </div>
-                                     <span className="text-sm font-bold">Preferences</span>
+                                     <span className="text-sm font-bold text-text-main group-hover:text-primary transition-colors">Preferences</span>
                                  </Link>
                              </div>
                         </div>

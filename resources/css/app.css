@@ -8,6 +8,7 @@
     :root {
         --bg-main: #F8FAFF;
         --bg-card: #FFFFFF;
+        --bg-input: #F5F7FF;
         --text-main: #0F172A;
         --text-muted: #64748B;
         --border-main: #E2E8F0;
@@ -19,10 +20,11 @@
     .dark {
         --bg-main: #020617;
         --bg-card: #0F172A;
+        --bg-input: #1E293B;
         --text-main: #F8FAFF;
         --text-muted: #94A3B8;
-        --border-main: #1E293B;
-        --accent-soft: #111827;
+        --border-main: #334155;
+        --accent-soft: #1E293B;
         --glass-bg: rgba(15, 23, 42, 0.7);
         --glass-border: rgba(30, 41, 59, 0.4);
     }

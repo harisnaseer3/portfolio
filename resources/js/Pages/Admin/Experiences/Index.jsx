@@ -65,7 +65,7 @@ export default function Index({ auth, experiences }) {
 
     return (
         <AuthenticatedLayout
-            header={<h2 className="text-xl font-bold leading-tight text-gray-800 flex items-center gap-2">
+            header={<h2 className="text-xl font-bold leading-tight text-text-main flex items-center gap-2">
                 <Briefcase className="text-primary" /> Manage Work Experience
             </h2>}
         >
@@ -73,11 +73,11 @@ export default function Index({ auth, experiences }) {
 
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div className="bg-white overflow-hidden shadow-premium sm:rounded-[2.5rem] border border-gray-100 p-8 md:p-12">
+                    <div className="bg-[var(--bg-card)] text-text-main overflow-hidden shadow-premium sm:rounded-[2.5rem] border border-[var(--border-main)] p-8 md:p-12 transition-colors">
                         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
                             <div>
-                                <h3 className="text-lg font-bold text-gray-900">Career Timeline</h3>
-                                <p className="text-gray-500 text-sm">Update your work history for the portfolio timeline.</p>
+                                <h3 className="text-lg font-bold text-text-main">Career Timeline</h3>
+                                <p className="text-text-muted text-sm">Update your work history for the portfolio timeline.</p>
                             </div>
                             <PrimaryButton onClick={() => openModal()} className="!rounded-xl flex items-center gap-2">
                                 <Plus size={18} /> Add Experience
@@ -87,21 +87,21 @@ export default function Index({ auth, experiences }) {
                         <div className="overflow-x-auto">
                             <table className="w-full text-left border-collapse">
                                 <thead>
-                                    <tr className="border-b border-gray-100">
-                                        <th className="py-4 px-4 font-bold text-gray-400 uppercase text-xs tracking-widest">Company & Role</th>
-                                        <th className="py-4 px-4 font-bold text-gray-400 uppercase text-xs tracking-widest">Duration</th>
-                                        <th className="py-4 px-4 font-bold text-gray-400 uppercase text-xs tracking-widest text-right">Actions</th>
+                                    <tr className="border-b border-[var(--border-main)]">
+                                        <th className="py-4 px-4 font-bold text-text-muted uppercase text-xs tracking-widest">Company & Role</th>
+                                        <th className="py-4 px-4 font-bold text-text-muted uppercase text-xs tracking-widest">Duration</th>
+                                        <th className="py-4 px-4 font-bold text-text-muted uppercase text-xs tracking-widest text-right">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {experiences.map((exp) => (
-                                        <tr key={exp.id} className="border-b border-gray-50 hover:bg-gray-50/50 transition-colors">
+                                        <tr key={exp.id} className="border-b border-[var(--border-main)] hover:bg-[var(--bg-input)] transition-colors">
                                             <td className="py-5 px-4">
-                                                <div className="font-bold text-gray-900">{exp.company}</div>
+                                                <div className="font-bold text-text-main">{exp.company}</div>
                                                 <div className="text-sm text-primary font-medium">{exp.role}</div>
-                                                <p className="text-xs text-gray-400 mt-1 line-clamp-1">{exp.description}</p>
+                                                <p className="text-xs text-text-muted mt-1 line-clamp-1">{exp.description}</p>
                                             </td>
-                                            <td className="py-5 px-4 text-gray-500 font-medium">
+                                            <td className="py-5 px-4 text-text-muted font-medium">
                                                 {exp.duration}
                                             </td>
                                             <td className="py-5 px-4 text-right">
@@ -137,8 +137,8 @@ export default function Index({ auth, experiences }) {
             </div>
 
             <Modal show={isModalOpen} onClose={closeModal} maxWidth="2xl">
-                <form onSubmit={submit} className="p-8">
-                    <h2 className="text-2xl font-bold mb-6">
+                <form onSubmit={submit} className="p-8 text-text-main">
+                    <h2 className="text-2xl font-black text-text-main p-3 border-l-4 border-primary bg-primary/5 rounded-r-lg mb-6">
                         {editingExperience ? 'Edit Experience' : 'Add Experience'}
                     </h2>
 
@@ -195,10 +195,10 @@ export default function Index({ auth, experiences }) {
                         </div>
 
                         <div className="col-span-2">
-                            <InputLabel htmlFor="description" value="Description" />
+                            <InputLabel htmlFor="description" value="Description" className="uppercase text-[10px] font-black tracking-widest text-text-muted" />
                             <textarea
                                 id="description"
-                                className="mt-1 block w-full !rounded-xl border-gray-300 focus:border-primary focus:ring-primary shadow-sm h-32"
+                                className="mt-1 block w-full !rounded-xl border-[var(--border-main)] bg-[var(--bg-input)] text-text-main focus:border-primary focus:ring-primary shadow-sm h-32 p-4"
                                 value={data.description}
                                 onChange={(e) => setData('description', e.target.value)}
                                 required

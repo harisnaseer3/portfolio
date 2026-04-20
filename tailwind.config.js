@@ -15,18 +15,18 @@ export default {
         extend: {
             colors: {
                 primary: {
-                    DEFAULT: '#6366F1', // Indigo/Blue from screenshot
+                    DEFAULT: '#6366F1',
                     hover: '#4F46E5',
                     light: '#818CF8',
                 },
                 secondary: {
-                    DEFAULT: '#A855F7', // Purple accent
+                    DEFAULT: '#A855F7',
                     light: '#C084FC',
                 },
-                'text-main': '#0F172A', // Slate 900
-                'text-muted': '#64748B', // Slate 500
-                'accent-blue-soft': '#F5F7FF', // Lavender-ish background
-                'border-main': '#E2E8F0', // Slate 200
+                'text-main': 'var(--text-main)',
+                'text-muted': 'var(--text-muted)',
+                'accent-blue-soft': 'var(--accent-soft)',
+                'border-main': 'var(--border-main)',
             },
             fontFamily: {
                 sans: ['Outfit', 'Inter', ...defaultTheme.fontFamily.sans],
