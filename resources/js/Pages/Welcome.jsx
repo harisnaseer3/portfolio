@@ -77,16 +77,16 @@ const SkillBar = ({ skill, percentage }) => (
     </div>
 );
 
-const ServiceCard = ({ title, desc, icon: Icon, index }) => (
+const ServiceCard = ({ title, desc, iconName, index }) => (
     <motion.div 
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ delay: index * 0.1 }}
         whileHover={{ y: -10 }}
-        className="p-8 bg-white dark:bg-slate-900 rounded-[2.5rem] border border-gray-100 dark:border-slate-800 shadow-card hover:shadow-premium transition-all group"
+        className="p-8 bg-white dark:bg-slate-900 rounded-[2.5rem] border border-gray-100 dark:border-slate-800 shadow-card hover:shadow-premium transition-all group h-full"
     >
         <div className="w-16 h-16 bg-primary/10 dark:bg-primary/20 rounded-2xl flex items-center justify-center text-primary dark:text-primary-light mb-6 group-hover:scale-110 transition-transform">
-            <Icon size={32} />
+            <IconResolver iconName={iconName} size={32} />
         </div>
         <h3 className="text-xl font-black text-gray-900 dark:text-white mb-3 tracking-tight">{title}</h3>
         <p className="text-text-muted dark:text-slate-400 font-medium leading-relaxed italic">
@@ -218,10 +218,10 @@ export default function Welcome({
     ];
 
     const displayServices = services?.length > 0 ? services : [
-        { title: 'WEB DEVELOPMENT', icon: Code2, description: 'Building responsive and modern web applications.' },
-        { title: 'UI DESIGN', icon: Palette, description: 'Creating beautiful and functional user interfaces.' },
-        { title: 'MOBILE APP', icon: Smartphone, description: 'Cross-platform mobile apps with seamless UX.' },
-        { title: 'BRANDING', icon: Briefcase, description: 'Developing unique brand identities and logos.' }
+        { title: 'WEB DEVELOPMENT', icon: 'Code2', description: 'Building responsive and modern web applications.' },
+        { title: 'UI DESIGN', icon: 'Palette', description: 'Creating beautiful and functional user interfaces.' },
+        { title: 'MOBILE APP', icon: 'Smartphone', description: 'Cross-platform mobile apps with seamless UX.' },
+        { title: 'BRANDING', icon: 'Briefcase', description: 'Developing unique brand identities and logos.' }
     ];
     
     const displayExperiences = experiences?.length > 0 ? experiences : [
@@ -387,13 +387,14 @@ export default function Welcome({
                     <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
                         <AnimatePresence mode="popLayout">
                             {servicesToDisplay.map((service, idx) => (
-                                <ServiceCard 
-                                    key={service.id || idx} 
-                                    index={idx}
-                                    title={service.title} 
-                                    desc={service.description} 
-                                    icon={service.icon || Palette} 
-                                />
+                                <div key={service.id || idx} className="h-full">
+                                    <ServiceCard 
+                                        index={idx}
+                                        title={service.title} 
+                                        desc={service.description} 
+                                        iconName={service.icon} 
+                                    />
+                                </div>
                             ))}
                         </AnimatePresence>
                     </div>
